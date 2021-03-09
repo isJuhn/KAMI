@@ -1,0 +1,18 @@
+﻿<Window x:Class="KAMI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KAMI"
+        mc:Ignorable="d"
+        Title="Kot And Mouse Injector" Height="247" Width="331" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <Label x:Name="statusLabel" Content="KAMI Status: Off" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="buttonLabel" Content="On/Off Button: " HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="toggleButton" Content="Unbound" HorizontalAlignment="Left" Margin="107,44,0,0" VerticalAlignment="Top" Width="59" Click="toggleButton_Click" KeyDown="toggleButton_KeyDown" LostFocus="toggleButton_LostFocus"/>
+        <Label x:Name="sensitivityLabel" Content="Sensitivity: " HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="sensitivityTextBox" HorizontalAlignment="Left" Margin="84,76,0,0" Text="0.005" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="infoLabel" Content="Info:" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
