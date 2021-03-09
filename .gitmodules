@@ -1,0 +1,3 @@
+[submodule "pcsx2_ipc"]
+	path = pcsx2_ipc
+	url = https://code.govanify.com/govanify/pcsx2_ipc.git
