@@ -4,6 +4,15 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,5 +20,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="call &quot;$(DevEnvDir)..\..\VC\Auxiliary\Build\vcvars64.bat&quot; &amp;&amp; cd &quot;$(SolutionDir)pcsx2_ipc\bindings\c&quot; &amp;&amp; meson build &amp;&amp; cd build &amp;&amp; ninja &amp;&amp; xcopy pcsx2_ipc_c.dll &quot;$(ProjectDir)&quot; /Y" />
+  </Target>
 
 </Project>
