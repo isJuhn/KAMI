@@ -15,7 +15,7 @@ namespace KAMI.Games
     {
         protected IntPtr m_ipc;
         protected TCamera m_camera;
-        public float SensModifier { get; set; } = 0.005f;
+        public float SensModifier { get; set; } = 0.003f;
 
         public Game(IntPtr ipc)
         {

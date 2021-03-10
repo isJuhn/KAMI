@@ -11,7 +11,10 @@ namespace KAMI
         {
             switch (id)
             {
-
+                case "BLUS31604":
+                case "BLES02247":
+                case "NPUB31848":
+                case "NPEB02436": return new Persona5PS3(ipc);
                 case "BCES00052": return new RatchetToD(ipc);
                 case "BCES01503": return new Ratchet3PS3(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
