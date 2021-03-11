@@ -21,8 +21,4 @@
     </None>
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="call &quot;$(DevEnvDir)..\..\VC\Auxiliary\Build\vcvars64.bat&quot; &amp;&amp; cd &quot;$(SolutionDir)pcsx2_ipc\bindings\c&quot; &amp;&amp; meson build &amp;&amp; cd build &amp;&amp; ninja &amp;&amp; xcopy pcsx2_ipc_c.dll &quot;$(TargetDir)&quot; /Y" />
-  </Target>
-
 </Project>
