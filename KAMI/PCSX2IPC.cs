@@ -5,7 +5,7 @@ namespace KAMI
 {
     public static class PCSX2IPC
     {
-        const string libipc = "pcsx2_ipc_c.dll";
+        private const string libipc = "pcsx2_ipc_c.dll";
 
         [DllImport(libipc)]
         static extern IntPtr pcsx2ipc_new();
@@ -50,12 +50,15 @@ namespace KAMI
         [DllImport(libipc)]
         static extern IPCStatus pcsx2ipc_get_error(IntPtr v);
 
-        /**
- * IPC Command messages opcodes. @n
- * A list of possible operations possible by the IPC. @n
- * Each one of them is what we call an "opcode" and is the first
- * byte sent by the IPC to differentiate between commands.
- */
+
+        /// <summary>
+        /// IPC Command messages opcodes.
+        /// </summary>
+        /// <remarks>
+        /// A list of possible operations possible by the IPC.
+        /// Each one of them is what we call an "opcode" and is the first
+        /// byte sent by the IPC to differentiate between commands.
+        /// </remarks>
         public enum IPCCommand : Byte
         {
             MsgRead8 = 0,           /**< Read 8 bit value to memory. */
@@ -75,11 +78,13 @@ namespace KAMI
             MsgUnimplemented = 0xFF /**< Unimplemented IPC message. */
         };
 
-        /**
- * Result code of the IPC operation. @n
- * A list of result codes that should be returned, or thrown, depending
- * on the state of the result of an IPC command.
- */
+        /// <summary>
+        /// Result code of the IPC operation.
+        /// </summary>
+        /// <remarks>
+        /// A list of result codes that should be returned, or thrown, depending
+        /// on the state of the result of an IPC command.
+        /// </remarks>
         public enum IPCStatus : UInt32
         {
             Success = 0,       /**< IPC command successfully completed. */

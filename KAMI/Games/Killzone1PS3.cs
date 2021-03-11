@@ -16,12 +16,12 @@ namespace KAMI.Games
 
         public override void InjectionStart()
         {
-            uint p1 = (uint)PCSX2IPC.Read(m_ipc, BaseAddress, PCSX2IPC.IPCCommand.MsgRead32, false);
-            uint p2 = (uint)PCSX2IPC.Read(m_ipc, p1 + 0x78, PCSX2IPC.IPCCommand.MsgRead32, false);
-            uint p3 = (uint)PCSX2IPC.Read(m_ipc, p2 + 0x220, PCSX2IPC.IPCCommand.MsgRead32, false);
-            uint p4 = (uint)PCSX2IPC.Read(m_ipc, p3 + 0xD8, PCSX2IPC.IPCCommand.MsgRead32, false);
+            uint p1 = IPCUtils.ReadU32(m_ipc, BaseAddress);
+            uint p2 = IPCUtils.ReadU32(m_ipc, p1 + 0x78);
+            uint p3 = IPCUtils.ReadU32(m_ipc, p2 + 0x220);
+            uint p4 = IPCUtils.ReadU32(m_ipc, p3 + 0xD8);
+            uint p5 = IPCUtils.ReadU32(m_ipc, p4 + 0x31C);
             m_addressVert = p4 + 0x14c;
-            uint p5 = (uint)PCSX2IPC.Read(m_ipc, p4 + 0x31C, PCSX2IPC.IPCCommand.MsgRead32, false);
             m_addressHor = p5 + 0x78;
         }
 

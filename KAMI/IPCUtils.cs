@@ -8,7 +8,7 @@ namespace KAMI
         public static IPCStatus Error;
         public static float ReadFloat(IntPtr ipc, uint address)
         {
-            uint value = (uint)Read(ipc, address, IPCCommand.MsgRead32, false);
+            uint value = (uint)Read(ipc, address, IPCCommand.MsgRead32);
             Error = GetError(ipc);
             byte[] floatBytes = BitConverter.GetBytes(value);
             return BitConverter.ToSingle(floatBytes, 0);
@@ -18,7 +18,21 @@ namespace KAMI
         {
             byte[] floatBytes = BitConverter.GetBytes(value);
             uint uintValue = BitConverter.ToUInt32(floatBytes);
-            Write(ipc, address, uintValue, IPCCommand.MsgWrite32, false);
+            Write(ipc, address, uintValue, IPCCommand.MsgWrite32);
+            Error = GetError(ipc);
+        }
+
+        public static uint ReadU32(IntPtr ipc, uint address)
+        {
+            uint value = (uint)Read(ipc, address, IPCCommand.MsgRead32);
+            Error = GetError(ipc);
+            return value;
+        }
+
+        public static void WriteU32(IntPtr ipc, uint address, uint value)
+        {
+            Write(ipc, address, value, IPCCommand.MsgWrite32);
+            Error = GetError(ipc);
         }
     }
 }
