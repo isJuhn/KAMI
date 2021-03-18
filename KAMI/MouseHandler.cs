@@ -12,15 +12,14 @@ namespace KAMI
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetCursorPos(out POINT lpPoint);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetCursorPos(int x, int y);
+
+        [DllImport("dwmapi.dll")]
+        static extern int DwmGetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE dwAttribute, out RECT pvAttribute, int cbAttribute);
 
         int m_centerX = 0;
         int m_centerY = 0;
@@ -29,7 +28,7 @@ namespace KAMI
         {
             IntPtr handle = GetForegroundWindow();
             RECT rect;
-            if (GetWindowRect(handle, out rect))
+            if (DwmGetWindowAttribute(handle, DWMWINDOWATTRIBUTE.ExtendedFrameBounds, out rect, Marshal.SizeOf(typeof(RECT))) == 0)
             {
                 m_centerX = (rect.Left + rect.Right) / 2;
                 m_centerY = (rect.Top + rect.Bottom) / 2;
@@ -48,6 +47,25 @@ namespace KAMI
         {
             SetCursorPos(m_centerX, m_centerY);
         }
+    }
+
+    enum DWMWINDOWATTRIBUTE : uint
+    {
+        NCRenderingEnabled = 1,
+        NCRenderingPolicy,
+        TransitionsForceDisabled,
+        AllowNCPaint,
+        CaptionButtonBounds,
+        NonClientRtlLayout,
+        ForceIconicRepresentation,
+        Flip3DPolicy,
+        ExtendedFrameBounds,
+        HasIconicBitmap,
+        DisallowPeek,
+        ExcludedFromPeek,
+        Cloak,
+        Cloaked,
+        FreezeRepresentation
     }
 
     [StructLayout(LayoutKind.Sequential)]
