@@ -110,8 +110,8 @@ namespace KAMI
                 if (m_injecting)
                 {
                     var (diffX, diffY) = m_mouseHandler.GetCenterDiff();
-                    m_game.UpdateCamera(diffX, diffY);
                     m_mouseHandler.SetCursorCenter();
+                    m_game.UpdateCamera(diffX, diffY);
                 }
                 Thread.Sleep(8);
             }
