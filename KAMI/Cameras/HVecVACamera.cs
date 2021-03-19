@@ -10,7 +10,7 @@ namespace KAMI.Cameras
 
         public void Update(float diffX, float diffY)
         {
-            double horAngle = Math.Atan2(HorX, HorY);
+            double horAngle = Math.Atan2(HorY, HorX);
             horAngle += diffX;
             Vert += diffY;
             HorX = (float)Math.Cos(horAngle);
