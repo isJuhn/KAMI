@@ -27,6 +27,9 @@ namespace KAMI
         static extern string pcsx2ipc_version(IntPtr v, bool batch);
 
         [DllImport(libipc)]
+        static extern EmuStatus pcsx2ipc_status(IntPtr v, bool batch);
+
+        [DllImport(libipc)]
         [return: MarshalAs(UnmanagedType.LPUTF8Str)]
         static extern string pcsx2ipc_getgametitle(IntPtr v, bool batch);
 
@@ -37,6 +40,10 @@ namespace KAMI
         [DllImport(libipc)]
         [return: MarshalAs(UnmanagedType.LPUTF8Str)]
         static extern string pcsx2ipc_getgameuuid(IntPtr v, bool batch);
+
+        [DllImport(libipc)]
+        [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+        static extern string pcsx2ipc_getgameversion(IntPtr v, bool batch);
 
         [DllImport(libipc)]
         static extern void pcsx2ipc_write(IntPtr v, UInt32 address, UInt64 val, IPCCommand msg, bool batch);
@@ -75,6 +82,8 @@ namespace KAMI
             MsgTitle = 0xB,         /**< Returns the game title. */
             MsgID = 0xC,            /**< Returns the game ID. */
             MsgUUID = 0xD,          /**< Returns the game UUID. */
+            MsgGameVersion = 0xE,   /**< Returns the game verion. */
+            MsgStatus = 0xF,        /**< Returns the emulator status. */
             MsgUnimplemented = 0xFF /**< Unimplemented IPC message. */
         };
 
@@ -93,6 +102,19 @@ namespace KAMI
             NoConnection = 3,  /**< Cannot connect to the IPC socket. */
             Unimplemented = 4, /**< Unimplemented IPC command. */
             Unknown = 5        /**< Unknown status. */
+        };
+
+        /// <summary>
+        /// Emulator status enum. @n
+        /// </summary>
+        /// <remarks>
+        /// list of possible emulator statuses. @n
+        /// </remarks>
+        public enum EmuStatus : UInt32
+        {
+            Running = 0,            /**< Game is running */
+            Paused = 1,             /**< Game is paused */
+            Shutdown = 2,           /**< Game is shutdown */
         };
 
         public static IntPtr New()
@@ -125,6 +147,11 @@ namespace KAMI
             return pcsx2ipc_version(v, batch);
         }
 
+        public static EmuStatus Status(IntPtr v, bool batch = false)
+        {
+            return pcsx2ipc_status(v, batch);
+        }
+
         public static string GetGameTitle(IntPtr v, bool batch = false)
         {
             return pcsx2ipc_getgametitle(v, batch);
@@ -138,6 +165,11 @@ namespace KAMI
         public static string GetGameUUID(IntPtr v, bool batch = false)
         {
             return pcsx2ipc_getgameuuid(v, batch);
+        }
+
+        public static string GetGameVersion(IntPtr v, bool batch = false)
+        {
+            return pcsx2ipc_getgameversion(v, batch);
         }
 
         public static void Write(IntPtr v, uint address, ulong val, IPCCommand msg, bool batch = false)
