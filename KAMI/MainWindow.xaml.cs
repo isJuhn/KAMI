@@ -18,6 +18,14 @@ using System.Windows.Shapes;
 
 namespace KAMI
 {
+    enum KAMIStatus
+    {
+        Unconnected,
+        Connected,
+        Ready,
+        Injecting,
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -31,23 +39,23 @@ namespace KAMI
         bool m_buttonChange = false;
         bool m_injecting = false;
         bool m_closing = false;
+        bool m_connected = false;
+        KAMIStatus m_status = KAMIStatus.Unconnected;
+        PCSX2IPC.EmuStatus m_emuStatus;
         Thread m_thread;
 
         public MainWindow()
         {
             InitializeComponent();
+            m_ipc = PCSX2IPC.New();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            m_ipc = PCSX2IPC.New();
-            statusLabel.Content = "Kami Status: Connected";
-            infoLabel.Content = $"Info: {PCSX2IPC.Version(m_ipc)}\n{PCSX2IPC.GetGameTitle(m_ipc)}\n{PCSX2IPC.GetGameID(m_ipc)}\n{PCSX2IPC.GetGameUUID(m_ipc)}";
-            m_game = GameManager.GetGame(m_ipc, PCSX2IPC.GetGameID(m_ipc));
             m_mouseHandler = new MouseHandler();
             m_keyHandler = new KeyHandler(new WindowInteropHelper(this).Handle);
             m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
-            m_thread = new Thread(InjectorFunction);
+            m_thread = new Thread(UpdateFunction);
             m_thread.Start();
         }
 
@@ -90,30 +98,130 @@ namespace KAMI
 
         private void ToggleInjector()
         {
-            m_injecting = !m_injecting;
-            if (m_injecting)
+            if (m_connected)
             {
-                statusLabel.Content = "Kami Status: Injecting";
-                m_game.InjectionStart();
-                m_mouseHandler.GetCenterDiff();
-                m_mouseHandler.SetCursorCenter();
-            } else
-            {
-                statusLabel.Content = "Kami Status: Connected";
+                m_injecting = !m_injecting;
+                if (m_injecting)
+                {
+                    m_game.InjectionStart();
+                    m_mouseHandler.GetCenterDiff();
+                    m_mouseHandler.SetCursorCenter();
+                }
             }
         }
 
-        private void InjectorFunction()
+        private void CheckStatus()
+        {
+            if (!m_connected)
+            {
+                m_status = KAMIStatus.Unconnected;
+            }
+            else if (m_game == null)
+            {
+                m_status = KAMIStatus.Connected;
+            }
+            else if (m_injecting == false)
+            {
+                m_status = KAMIStatus.Ready;
+            }
+            else
+            {
+                m_status = KAMIStatus.Injecting;
+            }
+        }
+
+        private void UpdateState()
+        {
+            m_emuStatus = PCSX2IPC.Status(m_ipc);
+            switch (m_status)
+            {
+                case KAMIStatus.Unconnected:
+                    if (PCSX2IPC.GetError(m_ipc) == PCSX2IPC.IPCStatus.Success)
+                    {
+                        m_connected = true;
+                    }
+                    break;
+                case KAMIStatus.Connected:
+                    if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    {
+                        m_connected = false;
+                        break;
+                    }
+                    if (m_emuStatus != PCSX2IPC.EmuStatus.Shutdown)
+                    {
+                        m_game = GameManager.GetGame(m_ipc, PCSX2IPC.GetGameID(m_ipc));
+                    }
+                    break;
+                case KAMIStatus.Ready:
+                    if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    {
+                        m_connected = false;
+                        m_game = null;
+                    }
+                    else if (m_emuStatus == PCSX2IPC.EmuStatus.Shutdown)
+                    {
+                        m_game = null;
+                    }
+                    break;
+                case KAMIStatus.Injecting:
+                    if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    {
+                        m_connected = false;
+                        m_game = null;
+                        m_injecting = false;
+                    }
+                    else if (m_emuStatus == PCSX2IPC.EmuStatus.Shutdown)
+                    {
+                        m_game = null;
+                        m_injecting = false;
+                    }
+                    break;
+            }
+        }
+
+        private void UpdateGui()
+        {
+            string version = PCSX2IPC.Version(m_ipc);
+            string title = PCSX2IPC.GetGameTitle(m_ipc);
+            string titleId = PCSX2IPC.GetGameID(m_ipc);
+            string hash = PCSX2IPC.GetGameUUID(m_ipc);
+            string gameVersion = PCSX2IPC.GetGameVersion(m_ipc);
+            Dispatcher.BeginInvoke((Action)(() =>
+            {
+                if (m_connected)
+                {
+                    infoLabel.Content = $"Version:      {version}\n";
+                    infoLabel.Content += $"Title:        {title}\n";
+                    infoLabel.Content += $"TitleId:      {titleId}\n";
+                    infoLabel.Content += $"Hash:         {hash}\n";
+                    infoLabel.Content += $"Game Version: {gameVersion}\n";
+                    infoLabel.Content += $"Emu Status:   {m_emuStatus}\n";
+                }
+                statusLabel.Content = $"KAMI Status: {m_status}";
+            }));
+        }
+
+        private void UpdateFunction()
         {
             while (!m_closing)
             {
-                if (m_injecting)
+                CheckStatus();
+                UpdateState();
+                UpdateGui();
+                if (m_status == KAMIStatus.Injecting)
                 {
                     var (diffX, diffY) = m_mouseHandler.GetCenterDiff();
                     m_game.UpdateCamera(diffX, diffY);
                     m_mouseHandler.SetCursorCenter();
                 }
-                Thread.Sleep(8);
+                if (!m_connected)
+                {
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    Thread.Sleep(8);
+                }
             }
         }
     }

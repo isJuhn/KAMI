@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KAMI"
         mc:Ignorable="d"
-        Title="Kot And Mouse Injector" Height="247" Width="331" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="Kot And Mouse Injector" Height="260" Width="331" Loaded="Window_Loaded" Closing="Window_Closing">
     <Grid>
         <Label x:Name="statusLabel" Content="KAMI Status: Off" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="buttonLabel" Content="On/Off Button: " HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
