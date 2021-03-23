@@ -19,6 +19,8 @@ namespace KAMI
                 case "BCES00052": return new RatchetToD(ipc);
                 case "BCES01503": return new Ratchet3PS3(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
+                case "BCES00081": return new Killzone2PS3(ipc);
+                case "BCES00226": return new Resistance2(ipc);
                 case "[SCUS-97353]": return new Ratchet3PS2(ipc);
                 default:
                     throw new NotImplementedException($"Game with id {id} not implemented");
