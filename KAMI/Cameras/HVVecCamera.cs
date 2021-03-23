@@ -14,8 +14,8 @@ namespace KAMI.Cameras
             double vertAngle = Math.Asin(Y);
             horAngle += diffX;
             vertAngle += diffY;
-            X = (float)Math.Cos(horAngle);
-            Z = (float)Math.Sin(horAngle);
+            X = (float)Math.Cos(horAngle) * (float)Math.Cos(vertAngle);
+            Z = (float)Math.Sin(horAngle) * (float)Math.Cos(vertAngle);
             Y = (float)Math.Sin(vertAngle);
         }
     }
