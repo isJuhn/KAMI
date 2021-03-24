@@ -15,6 +15,7 @@ namespace KAMI
                 case "BLES02247":
                 case "NPUB31848":
                 case "NPEB02436": return new Persona5PS3(ipc);
+                case "BLUS31197": return new Drakengard3PS3(ipc);
                 case "BLUS30481": return new NierPS3(ipc);
                 case "BCES00052": return new RatchetToD(ipc);
                 case "BCES01503": return new Ratchet3PS3(ipc);
