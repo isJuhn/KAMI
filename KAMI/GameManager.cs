@@ -20,6 +20,7 @@ namespace KAMI
                 case "BCES01503": return new Ratchet3PS3(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
                 case "BCES00081": return new Killzone2PS3(ipc);
+                case "BCES00001": return new Resistance1(ipc);
                 case "BCES00226": return new Resistance2(ipc);
                 case "[SCUS-97353]": return new Ratchet3PS2(ipc);
                 default:
