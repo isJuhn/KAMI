@@ -8,6 +8,7 @@ namespace KAMI.Utilities
     {
         private IntPtr m_ipc;
         private DerefChain m_parent;
+        // TODO: Is this really the right structure for this? We might never care about having children offsets like this.
         private Dictionary<long, DerefChain> m_children = new Dictionary<long, DerefChain>();
         private long m_offset;
         public long Value { get; private set; }
@@ -57,7 +58,7 @@ namespace KAMI.Utilities
                 int distance = -1;
                 bool valid = true;
                 DerefChain current = derefChain;
-                while (!visited.Contains(current))
+                while (true)
                 {
                     visited.Add(current);
                     distance++;
@@ -70,27 +71,31 @@ namespace KAMI.Utilities
                     {
                         return false;
                     }
-                    if (current.m_parent == null)
+                    if (current.m_parent == null || visited.Contains(current.m_parent))
                     {
-                        if (!valid)
-                        {
-                            if (recalculationDistance.TryGetValue(current, out int oldDistance))
-                            {
-                                if (oldDistance > distance)
-                                {
-                                    recalculationDistance[current] = distance;
-                                }
-                            }
-                            else
-                            {
-                                recalculationDistance[current] = distance;
-                            }
-                        }
                         break;
                     }
                     current = current.m_parent;
                 }
+                if (!valid)
+                {
+                    if (recalculationDistance.TryGetValue(current, out int oldDistance))
+                    {
+                        if (oldDistance > distance)
+                        {
+                            recalculationDistance[current] = distance;
+                        }
+                    }
+                    else
+                    {
+                        recalculationDistance[current] = distance;
+                    }
+                }
             }
+            // TODO: Find a better way to traverse this structure to avoid recalculating nodes already recalculated.
+            // Alternatively, mark up which nodes will already be recalculated because of their parents in some smart way.
+            // Or, collect the nodes to be recalculated in some other kind of structure earlier that keeps the order and don't do
+            // recursive recalculation in RecalculateInternal
             foreach (var kvp in recalculationDistance)
             {
                 if (!kvp.Key.RecalculateInternal(kvp.Value))
@@ -103,7 +108,7 @@ namespace KAMI.Utilities
 
         private bool VerifyInternal()
         {
-            long actual = m_parent != null ? IPCUtils.ReadU32(m_ipc, (uint)m_parent.Value) : m_offset;
+            long actual = m_parent != null ? IPCUtils.ReadU32(m_ipc, (uint)m_parent.Value) + m_offset : m_offset;
             return actual == Value;
         }
 
