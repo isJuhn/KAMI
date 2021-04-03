@@ -11,8 +11,9 @@
         <Label x:Name="buttonLabel" Content="On/Off Button: " HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
         <Button x:Name="toggleButton" Content="Unbound" HorizontalAlignment="Left" Margin="107,44,0,0" VerticalAlignment="Top" Width="59" Click="toggleButton_Click" KeyDown="toggleButton_KeyDown" LostFocus="toggleButton_LostFocus"/>
         <Label x:Name="sensitivityLabel" Content="Sensitivity: " HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="sensitivityTextBox" HorizontalAlignment="Left" Margin="84,76,0,0" Text="0.005" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="sensitivityTextBox" HorizontalAlignment="Left" Margin="84,76,0,0" Text="0.003" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="sensitivityTextBox_TextChanged"/>
         <Label x:Name="infoLabel" Content="Info:" HorizontalAlignment="Left" Margin="10,107,0,0" VerticalAlignment="Top"/>
+        <Ellipse x:Name="sensitivityEllipse" HorizontalAlignment="Left" Height="18" Margin="209,76,0,0" VerticalAlignment="Top" Width="18" Fill="DarkGreen"/>
 
     </Grid>
 </Window>

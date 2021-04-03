@@ -6,14 +6,17 @@ namespace KAMI.Games
 {
     public class Killzone3PS3 : Game<HVecVACamera>
     {
-        const uint BaseAddress = 0x1587880 + 0x760;
-
         DerefChain m_hor;
         DerefChain m_vert;
 
-        public Killzone3PS3(IntPtr ipc) : base(ipc)
+        public Killzone3PS3(IntPtr ipc, string version) : base(ipc)
         {
-            var baseChain = DerefChain.CreateDerefChain(ipc, BaseAddress, 0x38, 0x0, 0x68);
+            var baseChain = version switch
+            {
+                "01.00" => DerefChain.CreateDerefChain(ipc, 0x1587880 + 0x760, 0x38, 0x0, 0x68),
+                "01.14" => DerefChain.CreateDerefChain(ipc, 0x15fcf80 + 0x770, 0x40, 0x68),
+                _ => throw new NotImplementedException($"{nameof(Killzone3PS3)} with version '{version}' not implemented"),
+            };
             m_vert = baseChain.Chain(0x150).Chain(0xA0);
             m_hor = baseChain.Chain(0xFC).Chain(0x14).Chain(0xB0);
         }

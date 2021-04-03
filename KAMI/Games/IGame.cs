@@ -9,6 +9,7 @@ namespace KAMI.Games
     {
         public void InjectionStart();
         public void UpdateCamera(int diffX, int diffY);
+        public float SensModifier { get; set; }
     }
 
     public abstract class Game<TCamera> : IGame where TCamera : ICamera, new()

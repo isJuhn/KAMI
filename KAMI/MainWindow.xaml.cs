@@ -1,6 +1,7 @@
 ﻿using KAMI.Games;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -43,6 +44,7 @@ namespace KAMI
         KAMIStatus m_status = KAMIStatus.Unconnected;
         PCSX2IPC.EmuStatus m_emuStatus;
         Thread m_thread;
+        float m_sensitivity = 0.003f;
 
         public MainWindow()
         {
@@ -94,6 +96,23 @@ namespace KAMI
         {
             m_buttonChange = false;
             toggleButton.Content = m_key?.ToString() ?? "Unbound";
+        }
+
+        private void sensitivityTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sensitivityEllipse != null && float.TryParse(sensitivityTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out float sensitivity))
+            {
+                m_sensitivity = sensitivity;
+                if (m_game != null)
+                {
+                    m_game.SensModifier = sensitivity;
+                }
+                sensitivityEllipse.Fill = new SolidColorBrush(Color.FromRgb(0, 100, 0));
+            }
+            else if (sensitivityEllipse != null)
+            {
+                sensitivityEllipse.Fill = new SolidColorBrush(Color.FromRgb(100, 0, 0));
+            }
         }
 
         private void ToggleInjector()
@@ -149,7 +168,9 @@ namespace KAMI
                     }
                     if (m_emuStatus != PCSX2IPC.EmuStatus.Shutdown)
                     {
-                        m_game = GameManager.GetGame(m_ipc, PCSX2IPC.GetGameID(m_ipc));
+                        string titleId = PCSX2IPC.GetGameID(m_ipc);
+                        string gameVersion = PCSX2IPC.GetGameVersion(m_ipc);
+                        m_game = GameManager.GetGame(m_ipc, titleId, gameVersion);
                     }
                     break;
                 case KAMIStatus.Ready:
@@ -181,11 +202,11 @@ namespace KAMI
 
         private void UpdateGui()
         {
-            string version = PCSX2IPC.Version(m_ipc);
-            string title = PCSX2IPC.GetGameTitle(m_ipc);
-            string titleId = PCSX2IPC.GetGameID(m_ipc);
-            string hash = PCSX2IPC.GetGameUUID(m_ipc);
-            string gameVersion = PCSX2IPC.GetGameVersion(m_ipc);
+            string version = m_connected ? PCSX2IPC.Version(m_ipc) : "";
+            string title = m_connected ? PCSX2IPC.GetGameTitle(m_ipc) : "";
+            string titleId = m_connected ? PCSX2IPC.GetGameID(m_ipc) : "";
+            string gameVersion = m_connected ? PCSX2IPC.GetGameVersion(m_ipc) : "";
+            string hash = m_connected ? PCSX2IPC.GetGameUUID(m_ipc) : "";
             Dispatcher.BeginInvoke((Action)(() =>
             {
                 if (m_connected)
@@ -193,8 +214,8 @@ namespace KAMI
                     infoLabel.Content = $"Version:      {version}\n";
                     infoLabel.Content += $"Title:        {title}\n";
                     infoLabel.Content += $"TitleId:      {titleId}\n";
-                    infoLabel.Content += $"Hash:         {hash}\n";
                     infoLabel.Content += $"Game Version: {gameVersion}\n";
+                    infoLabel.Content += $"Hash:         {hash}\n";
                     infoLabel.Content += $"Emu Status:   {m_emuStatus}\n";
                 }
                 statusLabel.Content = $"KAMI Status: {m_status}";
