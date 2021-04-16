@@ -12,33 +12,16 @@ namespace KAMI.Games
         {
             m_addr = id switch
             {
-                "NPEB00833" => 0x72F0DFD0,
-                "NPUB30638" => 0x72F0DFD0,
-                "BLES00680" => version switch
-                {
-                    "01.00" => 0x72F0E810,
-                    "01.08" => 0x72F361E0,
-                    _ => throw new NotImplementedException($"{nameof(RDRPS3)} with id '{id}' and version '{version}' is not implemented"),
-                },
-                "BLUS30418" => version switch
-                {
-                    "01.00" => 0x72F25700,
-                    "01.08" => 0x72F361E0,
-                    _ => throw new NotImplementedException($"{nameof(RDRPS3)} with id '{id}' and version '{version}' is not implemented"),
-                },
-                "BLES01294" => version switch
-                {
-                    "01.00" => 0x72F4DCB0,
-                    "01.01" => 0x72F495B0,
-                    _ => throw new NotImplementedException($"{nameof(RDRPS3)} with id '{id}' and version '{version}' is not implemented"),
-                },
-                "BLUS30758" => version switch
-                {
-                    "01.00" => 0x72F4DCB0,
-                    "01.01" => 0x72F495B0,
-                    _ => throw new NotImplementedException($"{nameof(RDRPS3)} with id '{id}' and version '{version}' is not implemented"),
-                },
-                _ => throw new NotImplementedException($"{nameof(RDRPS3)} with id '{id}' is not implemented"),
+                // og digitals
+                "NPEB00833" or "NPUB30638" when version is "01.00" or "01.02" => 0x72F0DFD0,
+                // og physicals
+                "BLES00680" when version is "01.00" => 0x72F0E810,
+                "BLUS30418" when version is "01.00" => 0x72F25700,
+                "BLES00680" or "BLUS30418" when version is "01.08" => 0x72F361E0,
+                // goty editions
+                "BLES01294" or "BLUS30758" when version is "01.00" => 0x72F4DCB0,
+                "BLES01294" or "BLUS30758" when version is "01.01" => 0x72F495B0,
+                _ => throw new NotImplementedException($"{nameof(RDRPS3)} with id '{id}' and version '{version}' is not implemented"),
             };
         }
 
