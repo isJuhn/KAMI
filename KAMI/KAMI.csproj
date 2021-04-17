@@ -17,7 +17,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="WindowsInput">
+      <HintPath>WindowsInput.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="pcsx2_ipc_c.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="WindowsInput.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
