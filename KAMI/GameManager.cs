@@ -18,6 +18,7 @@ namespace KAMI
                 case "BLUS30481": return new NierPS3(ipc);
                 case "BCES00052": return new RatchetToD(ipc);
                 case "BCES01503": return new Ratchet3PS3(ipc);
+                case "NPUA80646": return new RatchetDLPS3(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
                 case "BCES00081": return new Killzone2PS3(ipc);
                 case "BCUS98234":
@@ -25,7 +26,8 @@ namespace KAMI
                 case "BCES00001": return new Resistance1(ipc);
                 case "BCES00226": return new Resistance2(ipc);
                 case "BCES01118": return new Resistance3(ipc);
-                case "[SCUS-97353]": return new Ratchet3PS2(ipc);
+                case " [SCUS-97353]": return new Ratchet3PS2(ipc);
+                case " [SCUS-97465]": return new RatchetDLPS2(ipc);
                 default:
                     throw new NotImplementedException($"Game with id '{id}' not implemented");
             }
