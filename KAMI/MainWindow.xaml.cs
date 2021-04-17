@@ -1,21 +1,13 @@
 ﻿using KAMI.Games;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KAMI
 {
@@ -36,8 +28,12 @@ namespace KAMI
         IGame m_game;
         MouseHandler m_mouseHandler;
         KeyHandler m_keyHandler;
-        Key? m_key = null;
-        bool m_buttonChange = false;
+        Key? m_toggleKey = null;
+        Key? m_mouse1Key = null;
+        Key? m_mouse2Key = null;
+        bool m_toggleButtonChange = false;
+        bool m_mouse1ButtonChange = false;
+        bool m_mouse2ButtonChange = false;
         bool m_injecting = false;
         bool m_closing = false;
         bool m_connected = false;
@@ -63,39 +59,104 @@ namespace KAMI
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (mouseCursorCheckBox.IsChecked ?? false)
+            {
+                MouseCursor.ShowCursor();
+            }
             PCSX2IPC.Delete(m_ipc);
+            m_keyHandler.Dispose();
             m_closing = true;
             m_thread.Join();
         }
 
         private void toggleButton_Click(object sender, RoutedEventArgs e)
         {
-            m_buttonChange = true;
+            m_toggleButtonChange = true;
             toggleButton.Content = "Press key";
         }
 
         private void toggleButton_KeyDown(object sender, KeyEventArgs e)
         {
-            if (m_buttonChange)
+            if (m_toggleButtonChange)
             {
-                m_buttonChange = false;
+                m_toggleButtonChange = false;
                 if (e.Key != Key.Escape)
                 {
-                    m_key = e.Key;
+                    m_toggleKey = e.Key;
                 }
                 else
                 {
-                    m_key = null;
+                    m_toggleKey = null;
                 }
-                m_keyHandler.SetHotKey(m_key);
-                toggleButton.Content = m_key?.ToString() ?? "Unbound";
+                m_keyHandler.SetHotKey(KeyHandler.KeyType.InjectionToggle, m_toggleKey);
+                toggleButton.Content = m_toggleKey?.ToString() ?? "Unbound";
             }
         }
 
         private void toggleButton_LostFocus(object sender, RoutedEventArgs e)
         {
-            m_buttonChange = false;
-            toggleButton.Content = m_key?.ToString() ?? "Unbound";
+            m_toggleButtonChange = false;
+            toggleButton.Content = m_toggleKey?.ToString() ?? "Unbound";
+        }
+
+        private void mouse1Button_Click(object sender, RoutedEventArgs e)
+        {
+            m_mouse1ButtonChange = true;
+            mouse1Button.Content = "Press key";
+        }
+
+        private void mouse1Button_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (m_mouse1ButtonChange)
+            {
+                m_mouse1ButtonChange = false;
+                if (e.Key != Key.Escape)
+                {
+                    m_mouse1Key = e.Key;
+                }
+                else
+                {
+                    m_mouse1Key = null;
+                }
+                m_keyHandler.SetHotKey(KeyHandler.KeyType.Mouse1, m_mouse1Key);
+                mouse1Button.Content = m_mouse1Key?.ToString() ?? "Unbound";
+            }
+        }
+
+        private void mouse1Button_LostFocus(object sender, RoutedEventArgs e)
+        {
+            m_mouse1ButtonChange = false;
+            mouse1Button.Content = m_mouse1Key?.ToString() ?? "Unbound";
+        }
+
+        private void mouse2Button_Click(object sender, RoutedEventArgs e)
+        {
+            m_mouse2ButtonChange = true;
+            mouse2Button.Content = "Press key";
+        }
+
+        private void mouse2Button_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (m_mouse2ButtonChange)
+            {
+                m_mouse2ButtonChange = false;
+                if (e.Key != Key.Escape)
+                {
+                    m_mouse2Key = e.Key;
+                }
+                else
+                {
+                    m_mouse2Key = null;
+                }
+                m_keyHandler.SetHotKey(KeyHandler.KeyType.Mouse2, m_mouse2Key);
+                mouse2Button.Content = m_mouse2Key?.ToString() ?? "Unbound";
+            }
+        }
+
+        private void mouse2Button_LostFocus(object sender, RoutedEventArgs e)
+        {
+            m_mouse2ButtonChange = false;
+            mouse2Button.Content = m_mouse2Key?.ToString() ?? "Unbound";
         }
 
         private void sensitivityTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -125,7 +186,16 @@ namespace KAMI
                     m_game.InjectionStart();
                     m_mouseHandler.GetCenterDiff();
                     m_mouseHandler.SetCursorCenter();
+                    if (mouseCursorCheckBox.IsChecked ?? false)
+                    {
+                        MouseCursor.HideCursor();
+                    }
                 }
+                else if (mouseCursorCheckBox.IsChecked ?? false)
+                {
+                    MouseCursor.ShowCursor();
+                }
+                m_keyHandler.SetEnableMouseHook(m_injecting);
             }
         }
 
