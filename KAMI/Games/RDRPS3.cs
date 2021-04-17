@@ -4,7 +4,7 @@ using System;
 
 namespace KAMI.Games
 {
-    public class RDRPS3 : Game<HVecVACamera>
+    public class RDRPS3 : Game<HVVecCamera>
     {
         uint m_addr;
 
@@ -25,19 +25,21 @@ namespace KAMI.Games
             };
         }
 
-        public override void InjectionStart()
-        {
-            m_camera.HorY = IPCUtils.ReadFloat(m_ipc, m_addr + 0x0);
-            m_camera.HorX = IPCUtils.ReadFloat(m_ipc, m_addr + 0x8);
-            m_camera.Vert = IPCUtils.ReadFloat(m_ipc, m_addr + 0x4);
-        }
-
         public override void UpdateCamera(int diffX, int diffY)
         {
-            m_camera.Update(-diffX * SensModifier, -diffY * SensModifier);
-            IPCUtils.WriteFloat(m_ipc, m_addr + 0x0, m_camera.HorY);
-            IPCUtils.WriteFloat(m_ipc, m_addr + 0x8, m_camera.HorX);
-            IPCUtils.WriteFloat(m_ipc, m_addr + 0x4, m_camera.Vert);
+            m_camera.X = IPCUtils.ReadFloat(m_ipc, m_addr + 0x0);
+            m_camera.Z = IPCUtils.ReadFloat(m_ipc, m_addr + 0x8);
+            m_camera.Y = IPCUtils.ReadFloat(m_ipc, m_addr + 0x4);
+
+            m_camera.Update(diffX * SensModifier, -diffY * SensModifier);
+
+            IPCUtils.WriteFloat(m_ipc, m_addr + 0x0, m_camera.X);
+            IPCUtils.WriteFloat(m_ipc, m_addr + 0x8, m_camera.Z);
+            IPCUtils.WriteFloat(m_ipc, m_addr + 0x4, m_camera.Y);
+
+            // force disable horizontal auto centering (game setting)
+            IPCUtils.WriteFloat(m_ipc, m_addr - 0xb9a8, 0x0);
+            IPCUtils.WriteFloat(m_ipc, m_addr - 0xb99c, 0x0);
         }
     }
 }
