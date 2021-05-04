@@ -24,7 +24,7 @@ In lieu of a webpage with a compatibility database, for the time being, here's a
 ## PS3
 - Ratchet &amp; Clank 3: Up your Arsenal (BCES01503)
 - Ratchet: Deadlocked (NPUA80646)
-- Ratched &amp; Clank: Tools of Destruction (BCES00052)
+- Ratchet &amp; Clank: Tools of Destruction (BCES00052)
 - Resistance: Fall of Man (BCES00001)
 - Resistance 2 (BCES00226)
 - Resistance 3 (BCES01118)
@@ -34,6 +34,7 @@ In lieu of a webpage with a compatibility database, for the time being, here's a
 - NIER: Gestalt (BLUS30481)
 - Persona 5 (all US/EU releases)
 - Red Dead Redemption (all US/EU releases, all versions)
+- Tales of Xillia (all US releases)
 
 # Running
 The application will automatically detect if RPCS3 is running and which game is running. If the game is supported it will automatically connect.
