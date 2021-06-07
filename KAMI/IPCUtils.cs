@@ -1,5 +1,5 @@
 ﻿using System;
-using static KAMI.PCSX2IPC;
+using static KAMI.PineIPC;
 
 namespace KAMI
 {

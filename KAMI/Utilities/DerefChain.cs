@@ -67,7 +67,7 @@ namespace KAMI.Utilities
                         valid = false;
                         distance = 0;
                     }
-                    if (PCSX2IPC.GetError(current.m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    if (PineIPC.GetError(current.m_ipc) != PineIPC.IPCStatus.Success)
                     {
                         return false;
                     }
@@ -122,7 +122,7 @@ namespace KAMI.Utilities
             if (numSkipChains < 1)
             {
                 Value = m_parent != null ? IPCUtils.ReadU32(m_ipc, (uint)m_parent.Value) + m_offset : m_offset;
-                if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                if (PineIPC.GetError(m_ipc) != PineIPC.IPCStatus.Success)
                 {
                     return false;
                 }
