@@ -3,59 +3,65 @@ using System.Runtime.InteropServices;
 
 namespace KAMI
 {
-    public static class PCSX2IPC
+    public static class PineIPC
     {
-        private const string libipc = "pcsx2_ipc_c.dll";
+        private const string libipc = "pine_c.dll";
 
         [DllImport(libipc)]
-        static extern IntPtr pcsx2ipc_new();
+        static extern IntPtr pine_rpcs3_new();
 
         [DllImport(libipc)]
-        static extern void pcsx2ipc_initialize_batch(IntPtr v);
+        static extern IntPtr pine_pcsx2_new();
 
         [DllImport(libipc)]
-        static extern Int32 pcsx2ipc_finalize_batch(IntPtr v);
+        static extern void pine_initialize_batch(IntPtr v);
 
         [DllImport(libipc)]
-        static extern void pcsx2ipc_send_command(IntPtr v, Int32 cmd);
+        static extern Int32 pine_finalize_batch(IntPtr v);
 
         [DllImport(libipc)]
-        static extern UInt64 pcsx2ipc_read(IntPtr v, UInt32 address, IPCCommand msg, bool batch);
+        static extern void pine_send_command(IntPtr v, Int32 cmd);
 
         [DllImport(libipc)]
-        [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-        static extern string pcsx2ipc_version(IntPtr v, bool batch);
-
-        [DllImport(libipc)]
-        static extern EmuStatus pcsx2ipc_status(IntPtr v, bool batch);
+        static extern UInt64 pine_read(IntPtr v, UInt32 address, IPCCommand msg, bool batch);
 
         [DllImport(libipc)]
         [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-        static extern string pcsx2ipc_getgametitle(IntPtr v, bool batch);
+        static extern string pine_version(IntPtr v, bool batch);
+
+        [DllImport(libipc)]
+        static extern EmuStatus pine_status(IntPtr v, bool batch);
 
         [DllImport(libipc)]
         [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-        static extern string pcsx2ipc_getgameid(IntPtr v, bool batch);
+        static extern string pine_getgametitle(IntPtr v, bool batch);
 
         [DllImport(libipc)]
         [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-        static extern string pcsx2ipc_getgameuuid(IntPtr v, bool batch);
+        static extern string pine_getgameid(IntPtr v, bool batch);
 
         [DllImport(libipc)]
         [return: MarshalAs(UnmanagedType.LPUTF8Str)]
-        static extern string pcsx2ipc_getgameversion(IntPtr v, bool batch);
+        static extern string pine_getgameuuid(IntPtr v, bool batch);
 
         [DllImport(libipc)]
-        static extern void pcsx2ipc_write(IntPtr v, UInt32 address, UInt64 val, IPCCommand msg, bool batch);
+        [return: MarshalAs(UnmanagedType.LPUTF8Str)]
+        static extern string pine_getgameversion(IntPtr v, bool batch);
 
         [DllImport(libipc)]
-        static extern void pcsx2ipc_delete(IntPtr v);
+        static extern void pine_write(IntPtr v, UInt32 address, UInt64 val, IPCCommand msg, bool batch);
 
         [DllImport(libipc)]
-        static extern void pcsx2ipc_free_batch_command(Int32 cmd);
+        static extern void pine_rpcs3_delete(IntPtr v);
 
         [DllImport(libipc)]
-        static extern IPCStatus pcsx2ipc_get_error(IntPtr v);
+        static extern void pine_pcsx2_delete(IntPtr v);
+
+        [DllImport(libipc)]
+        static extern void pine_free_batch_command(Int32 cmd);
+
+        [DllImport(libipc)]
+        static extern IPCStatus pine_get_error(IntPtr v);
 
 
         /// <summary>
@@ -76,7 +82,7 @@ namespace KAMI
             MsgWrite16 = 5,         /**< Write 16 bit value to memory. */
             MsgWrite32 = 6,         /**< Write 32 bit value to memory. */
             MsgWrite64 = 7,         /**< Write 64 bit value to memory. */
-            MsgVersion = 8,         /**< Returns PCSX2 version. */
+            MsgVersion = 8,         /**< Returns Emulator version. */
             MsgSaveState = 9,       /**< Saves a savestate. */
             MsgLoadState = 0xA,     /**< Loads a savestate. */
             MsgTitle = 0xB,         /**< Returns the game title. */
@@ -117,79 +123,89 @@ namespace KAMI
             Shutdown = 2,           /**< Game is shutdown */
         };
 
-        public static IntPtr New()
+        public static IntPtr NewRpcs3()
         {
-            return pcsx2ipc_new();
+            return pine_rpcs3_new();
+        }
+
+        public static IntPtr NewPcsx2()
+        {
+            return pine_pcsx2_new();
         }
 
         public static void InitializeBatch(IntPtr v)
         {
-            pcsx2ipc_initialize_batch(v);
+            pine_initialize_batch(v);
         }
 
         public static int FinalizeBatch(IntPtr v)
         {
-            return pcsx2ipc_finalize_batch(v);
+            return pine_finalize_batch(v);
         }
 
         public static void SendCommand(IntPtr v, int cmd)
         {
-            pcsx2ipc_send_command(v, cmd);
+            pine_send_command(v, cmd);
         }
 
         public static ulong Read(IntPtr v, uint address, IPCCommand msg, bool batch = false)
         {
-            return pcsx2ipc_read(v, address, msg, batch);
+            return pine_read(v, address, msg, batch);
         }
 
         public static string Version(IntPtr v, bool batch = false)
         {
-            return pcsx2ipc_version(v, batch);
+            return pine_version(v, batch);
         }
 
         public static EmuStatus Status(IntPtr v, bool batch = false)
         {
-            return pcsx2ipc_status(v, batch);
+            return pine_status(v, batch);
         }
 
         public static string GetGameTitle(IntPtr v, bool batch = false)
         {
-            return pcsx2ipc_getgametitle(v, batch);
+            return pine_getgametitle(v, batch);
         }
 
         public static string GetGameID(IntPtr v, bool batch = false)
         {
-            return pcsx2ipc_getgameid(v, batch);
+            return pine_getgameid(v, batch);
         }
 
         public static string GetGameUUID(IntPtr v, bool batch = false)
         {
-            return pcsx2ipc_getgameuuid(v, batch);
+            return pine_getgameuuid(v, batch);
         }
 
         public static string GetGameVersion(IntPtr v, bool batch = false)
         {
-            return pcsx2ipc_getgameversion(v, batch);
+            return pine_getgameversion(v, batch);
         }
 
         public static void Write(IntPtr v, uint address, ulong val, IPCCommand msg, bool batch = false)
         {
-            pcsx2ipc_write(v, address, val, msg, batch);
+            pine_write(v, address, val, msg, batch);
         }
 
-        public static void Delete(IntPtr v)
+        public static void DeleteRpcs3(IntPtr v)
         {
-            pcsx2ipc_delete(v);
+            pine_rpcs3_delete(v);
+        }
+
+        public static void DeletePcsx2(IntPtr v)
+        {
+            pine_pcsx2_delete(v);
         }
 
         public static void FreeBatchCommand(int cmd)
         {
-            pcsx2ipc_free_batch_command(cmd);
+            pine_free_batch_command(cmd);
         }
 
         public static IPCStatus GetError(IntPtr v)
         {
-            return pcsx2ipc_get_error(v);
+            return pine_get_error(v);
         }
     }
 }

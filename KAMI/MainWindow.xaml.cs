@@ -38,14 +38,14 @@ namespace KAMI
         bool m_closing = false;
         bool m_connected = false;
         KAMIStatus m_status = KAMIStatus.Unconnected;
-        PCSX2IPC.EmuStatus m_emuStatus;
+        PineIPC.EmuStatus m_emuStatus;
         Thread m_thread;
         float m_sensitivity = 0.003f;
 
         public MainWindow()
         {
             InitializeComponent();
-            m_ipc = PCSX2IPC.New();
+            m_ipc = PineIPC.NewRpcs3();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -63,7 +63,7 @@ namespace KAMI
             {
                 MouseCursor.ShowCursor();
             }
-            PCSX2IPC.Delete(m_ipc);
+            PineIPC.DeleteRpcs3(m_ipc);
             m_keyHandler.Dispose();
             m_closing = true;
             m_thread.Join();
@@ -221,47 +221,47 @@ namespace KAMI
 
         private void UpdateState()
         {
-            m_emuStatus = PCSX2IPC.Status(m_ipc);
+            m_emuStatus = PineIPC.Status(m_ipc);
             switch (m_status)
             {
                 case KAMIStatus.Unconnected:
-                    if (PCSX2IPC.GetError(m_ipc) == PCSX2IPC.IPCStatus.Success)
+                    if (PineIPC.GetError(m_ipc) == PineIPC.IPCStatus.Success)
                     {
                         m_connected = true;
                     }
                     break;
                 case KAMIStatus.Connected:
-                    if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    if (PineIPC.GetError(m_ipc) != PineIPC.IPCStatus.Success)
                     {
                         m_connected = false;
                         break;
                     }
-                    if (m_emuStatus != PCSX2IPC.EmuStatus.Shutdown)
+                    if (m_emuStatus != PineIPC.EmuStatus.Shutdown)
                     {
-                        string titleId = PCSX2IPC.GetGameID(m_ipc);
-                        string gameVersion = PCSX2IPC.GetGameVersion(m_ipc);
+                        string titleId = PineIPC.GetGameID(m_ipc);
+                        string gameVersion = PineIPC.GetGameVersion(m_ipc);
                         m_game = GameManager.GetGame(m_ipc, titleId, gameVersion);
                     }
                     break;
                 case KAMIStatus.Ready:
-                    if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    if (PineIPC.GetError(m_ipc) != PineIPC.IPCStatus.Success)
                     {
                         m_connected = false;
                         m_game = null;
                     }
-                    else if (m_emuStatus == PCSX2IPC.EmuStatus.Shutdown)
+                    else if (m_emuStatus == PineIPC.EmuStatus.Shutdown)
                     {
                         m_game = null;
                     }
                     break;
                 case KAMIStatus.Injecting:
-                    if (PCSX2IPC.GetError(m_ipc) != PCSX2IPC.IPCStatus.Success)
+                    if (PineIPC.GetError(m_ipc) != PineIPC.IPCStatus.Success)
                     {
                         m_connected = false;
                         m_game = null;
                         m_injecting = false;
                     }
-                    else if (m_emuStatus == PCSX2IPC.EmuStatus.Shutdown)
+                    else if (m_emuStatus == PineIPC.EmuStatus.Shutdown)
                     {
                         m_game = null;
                         m_injecting = false;
@@ -272,11 +272,11 @@ namespace KAMI
 
         private void UpdateGui()
         {
-            string version = m_connected ? PCSX2IPC.Version(m_ipc) : "";
-            string title = m_connected ? PCSX2IPC.GetGameTitle(m_ipc) : "";
-            string titleId = m_connected ? PCSX2IPC.GetGameID(m_ipc) : "";
-            string gameVersion = m_connected ? PCSX2IPC.GetGameVersion(m_ipc) : "";
-            string hash = m_connected ? PCSX2IPC.GetGameUUID(m_ipc) : "";
+            string version = m_connected ? PineIPC.Version(m_ipc) : "";
+            string title = m_connected ? PineIPC.GetGameTitle(m_ipc) : "";
+            string titleId = m_connected ? PineIPC.GetGameID(m_ipc) : "";
+            string gameVersion = m_connected ? PineIPC.GetGameVersion(m_ipc) : "";
+            string hash = m_connected ? PineIPC.GetGameUUID(m_ipc) : "";
             Dispatcher.BeginInvoke((Action)(() =>
             {
                 if (m_connected)
