@@ -18,7 +18,7 @@
         <Button x:Name="mouse2Button" Content="Unbound" HorizontalAlignment="Left" Margin="251,35,0,0" VerticalAlignment="Top" Click="mouse2Button_Click" KeyDown="mouse2Button_KeyDown" LostFocus="mouse2Button_LostFocus"/>
         <Label x:Name="mouse1Label" Content="Mouse1:" HorizontalAlignment="Left" Margin="191,7,0,0" VerticalAlignment="Top"/>
         <Label x:Name="mouse2Label" Content="Mouse2:" HorizontalAlignment="Left" Margin="191,32,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="mouseCursorCheckBox" Content="Hide mouse cursor" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="mouseCursorCheckBox" Content="Hide mouse cursor" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Checked="mouseCursorCheckBox_Checked" Unchecked="mouseCursorCheckBox_Unchecked"/>
 
     </Grid>
 </Window>
