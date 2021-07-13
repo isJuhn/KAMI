@@ -1,7 +1,7 @@
 ﻿using System;
-using static KAMI.PineIPC;
+using static KAMI.Core.PineIPC;
 
-namespace KAMI
+namespace KAMI.Core
 {
     public static class IPCUtils
     {

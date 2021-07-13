@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace KAMI
+namespace KAMI.Core
 {
     public static class PineIPC
     {
+#if Windows
         private const string libipc = "pine_c.dll";
+#elif Linux
+        private const string libipc = "libpine_c.so";
+#endif
 
         [DllImport(libipc)]
         static extern IntPtr pine_rpcs3_new();

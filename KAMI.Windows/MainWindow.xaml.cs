@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KAMI.Core;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace KAMI
+namespace KAMI.Windows
 {
 
 
@@ -28,10 +29,9 @@ namespace KAMI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             IntPtr hwnd = new WindowInteropHelper(this).Handle;
-            m_kami = new KAMICore(hwnd);
-            m_kami.OnUpdate += (object sender, IntPtr ipc) => UpdateGui(ipc);
             HwndSource source = HwndSource.FromHwnd(hwnd);
-            source.AddHook(new HwndSourceHook(m_kami.KeyboardHwndHook));
+            m_kami = new KAMICore(hwnd, (hwndHook) => source.AddHook(new HwndSourceHook(hwndHook)));
+            m_kami.OnUpdate += (object sender, IntPtr ipc) => UpdateGui(ipc);
             m_kami.Start();
         }
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace KAMI.Games
+namespace KAMI.Core.Games
 {
     public class Ratchet3PS3 : RatchetOGBase
     {

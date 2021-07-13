@@ -33,6 +33,7 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 *.dll
+*.so
 
 # Visual Studio
 .vs/

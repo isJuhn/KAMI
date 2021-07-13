@@ -1,8 +1,8 @@
 ﻿using System;
-using KAMI.Cameras;
-using KAMI.Utilities;
+using KAMI.Core.Cameras;
+using KAMI.Core.Utilities;
 
-namespace KAMI.Games
+namespace KAMI.Core.Games
 {
     public class Persona5PS3 : Game<HAVACamera>
     {

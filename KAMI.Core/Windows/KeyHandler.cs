@@ -1,12 +1,15 @@
-﻿using System;
+﻿#if Windows
+using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using WindowsInput;
 using WindowsInput.Native;
 
-namespace KAMI
+namespace KAMI.Core
 {
-    public class KeyHandler : IDisposable
+    public delegate IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled);
+
+    public class KeyHandler : IKeyHandler, IDisposable
     {
         [DllImport("user32.dll")]
         public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
@@ -29,14 +32,6 @@ namespace KAMI
         const int WM_RBUTTONUP = 0x0205;
         const int WH_MOUSE_LL = 14;
 
-        public enum KeyType
-        {
-            InjectionToggle = 0xCA7,
-            Mouse1,
-            Mouse2,
-        }
-
-        public delegate void KeyPressHandler(object sender);
         public event KeyPressHandler OnKeyPress;
 
         IntPtr m_hwnd;
@@ -47,10 +42,12 @@ namespace KAMI
         VirtualKeyCode? m_mouse2 = null;
         InputSimulator m_simulator = new InputSimulator();
 
-        public KeyHandler(IntPtr hwnd)
+
+        public KeyHandler(IntPtr hwnd, Action<HwndHook> addHookAction)
         {
             m_hwnd = hwnd;
             m_mouseProc = LowLevelHookProc;
+            addHookAction(HwndHook);
         }
 
         public void SetHotKey(KeyType keyType, int? key)
@@ -88,10 +85,7 @@ namespace KAMI
             }
         }
 
-        /// <summary>
-        /// Users of this class need to set up this hook themselves since we don't know if they use WPF or whatnot
-        /// </summary>
-        public IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch (msg)
             {
@@ -170,3 +164,4 @@ namespace KAMI
         }
     }
 }
+#endif

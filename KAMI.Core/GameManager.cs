@@ -1,9 +1,7 @@
-﻿using KAMI.Games;
+﻿using KAMI.Core.Games;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace KAMI
+namespace KAMI.Core
 {
     public static class GameManager
     {

@@ -1,8 +1,8 @@
-﻿using KAMI.Games;
+﻿using KAMI.Core.Games;
 using System;
 using System.Threading;
 
-namespace KAMI
+namespace KAMI.Core
 {
     public enum KAMIStatus
     {
@@ -17,7 +17,7 @@ namespace KAMI
         IntPtr m_ipc;
         IGame m_game;
         MouseHandler m_mouseHandler;
-        KeyHandler m_keyHandler;
+        IKeyHandler m_keyHandler;
         Thread m_thread;
         bool m_hideMouseCursor = false;
         bool m_closing = false;
@@ -31,17 +31,27 @@ namespace KAMI
 
         public delegate void UpdateHandler(object sender, IntPtr ipc);
         public event UpdateHandler OnUpdate;
-        public delegate IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled);
-        public HwndHook KeyboardHwndHook => m_keyHandler.HwndHook;
 
-        public KAMICore(IntPtr windowHandle)
+#if Windows
+        public KAMICore(IntPtr windowHandle, Action<HwndHook> addHookAction)
         {
             m_ipc = PineIPC.NewRpcs3();
             m_mouseHandler = new MouseHandler();
-            m_keyHandler = new KeyHandler(windowHandle);
+            m_keyHandler = new KeyHandler(windowHandle, addHookAction);
             m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
             m_thread = new Thread(UpdateFunction);
         }
+
+#elif Linux
+        public KAMICore()
+        {
+            m_ipc = PineIPC.NewRpcs3();
+            m_mouseHandler = new MouseHandler();
+            m_keyHandler = new KeyHandler();
+            m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
+            m_thread = new Thread(UpdateFunction);
+        }
+#endif
 
         public void Start()
         {
@@ -63,19 +73,19 @@ namespace KAMI
         public void SetToggleKey(int? key)
         {
             ToggleKey = key;
-            m_keyHandler.SetHotKey(KeyHandler.KeyType.InjectionToggle, ToggleKey);
+            m_keyHandler.SetHotKey(KeyType.InjectionToggle, ToggleKey);
         }
 
         public void SetMouse1Key(int? key)
         {
             Mouse1Key = key;
-            m_keyHandler.SetHotKey(KeyHandler.KeyType.Mouse1, Mouse1Key);
+            m_keyHandler.SetHotKey(KeyType.Mouse1, Mouse1Key);
         }
 
         public void SetMouse2Key(int? key)
         {
             Mouse2Key = key;
-            m_keyHandler.SetHotKey(KeyHandler.KeyType.Mouse2, Mouse2Key);
+            m_keyHandler.SetHotKey(KeyType.Mouse2, Mouse2Key);
         }
 
         public void SetSensitivity(float sensitivity)
@@ -191,7 +201,10 @@ namespace KAMI
             {
                 CheckStatus();
                 UpdateState();
-                OnUpdate(this, m_ipc);
+                if (OnUpdate != null)
+                {
+                    OnUpdate(this, m_ipc);
+                }
                 if (Status == KAMIStatus.Injecting)
                 {
                     var (diffX, diffY) = m_mouseHandler.GetCenterDiff();

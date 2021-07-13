@@ -1,8 +1,8 @@
-﻿using KAMI.Cameras;
-using KAMI.Utilities;
+﻿using KAMI.Core.Cameras;
+using KAMI.Core.Utilities;
 using System;
 
-namespace KAMI.Games
+namespace KAMI.Core.Games
 {
     public class Resistance3 : Game<HVVecCamera>
     {

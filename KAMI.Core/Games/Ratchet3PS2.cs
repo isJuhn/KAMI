@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KAMI.Games
+namespace KAMI.Core.Games
 {
     public class Ratchet3PS2 : RatchetOGBase
     {
