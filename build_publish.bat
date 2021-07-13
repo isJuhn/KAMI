@@ -1,1 +1,1 @@
-dotnet publish "KAMI/KAMI.csproj" -c Release -o "bin/publish/"
+dotnet publish "KAMI.Windows/KAMI.Windows.csproj" -c Release -o "bin/publish/"

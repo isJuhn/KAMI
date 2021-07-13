@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Windows.Input;
-using System.Windows.Interop;
 using WindowsInput;
 using WindowsInput.Native;
 
@@ -52,12 +50,10 @@ namespace KAMI
         public KeyHandler(IntPtr hwnd)
         {
             m_hwnd = hwnd;
-            HwndSource source = HwndSource.FromHwnd(m_hwnd);
-            source.AddHook(HwndHook);
             m_mouseProc = LowLevelHookProc;
         }
 
-        public void SetHotKey(KeyType keyType, Key? key)
+        public void SetHotKey(KeyType keyType, int? key)
         {
             switch (keyType)
             {
@@ -65,15 +61,14 @@ namespace KAMI
                     UnregisterHotKey(m_hwnd, (int)keyType);
                     if (key.HasValue)
                     {
-                        int vkey = KeyInterop.VirtualKeyFromKey(key.Value);
-                        RegisterHotKey(m_hwnd, (int)keyType, 0, vkey);
+                        RegisterHotKey(m_hwnd, (int)keyType, 0, key.Value);
                     }
                     break;
                 case KeyType.Mouse1:
-                    m_mouse1 = key.HasValue ? (VirtualKeyCode?)KeyInterop.VirtualKeyFromKey(key.Value) : null;
+                    m_mouse1 = key.HasValue ? (VirtualKeyCode?)key.Value : null;
                     break;
                 case KeyType.Mouse2:
-                    m_mouse2 = key.HasValue ? (VirtualKeyCode?)KeyInterop.VirtualKeyFromKey(key.Value) : null;
+                    m_mouse2 = key.HasValue ? (VirtualKeyCode?)key.Value : null;
                     break;
             }
         }
@@ -93,7 +88,10 @@ namespace KAMI
             }
         }
 
-        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        /// <summary>
+        /// Users of this class need to set up this hook themselves since we don't know if they use WPF or whatnot
+        /// </summary>
+        public IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch (msg)
             {
