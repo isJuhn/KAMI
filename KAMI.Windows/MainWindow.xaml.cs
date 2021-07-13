@@ -27,8 +27,11 @@ namespace KAMI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            m_kami = new KAMICore(new WindowInteropHelper(this).Handle);
+            IntPtr hwnd = new WindowInteropHelper(this).Handle;
+            m_kami = new KAMICore(hwnd);
             m_kami.OnUpdate += (object sender, IntPtr ipc) => UpdateGui(ipc);
+            HwndSource source = HwndSource.FromHwnd(hwnd);
+            source.AddHook(new HwndSourceHook(m_kami.KeyboardHwndHook));
             m_kami.Start();
         }
 
@@ -49,7 +52,7 @@ namespace KAMI
             {
                 m_toggleButtonChange = false;
                 Key? key = e.Key != Key.Escape ? e.Key : null;
-                m_kami.SetToggleKey(key);
+                m_kami.SetToggleKey(ToVKey(key));
                 toggleButton.Content = key?.ToString() ?? "Unbound";
             }
         }
@@ -57,7 +60,7 @@ namespace KAMI
         private void toggleButton_LostFocus(object sender, RoutedEventArgs e)
         {
             m_toggleButtonChange = false;
-            toggleButton.Content = m_kami.ToggleKey?.ToString() ?? "Unbound";
+            toggleButton.Content = FromVKey(m_kami.ToggleKey)?.ToString() ?? "Unbound";
         }
 
         private void mouse1Button_Click(object sender, RoutedEventArgs e)
@@ -72,7 +75,7 @@ namespace KAMI
             {
                 m_mouse1ButtonChange = false;
                 Key? key = e.Key != Key.Escape ? e.Key : null;
-                m_kami.SetMouse1Key(key);
+                m_kami.SetMouse1Key(ToVKey(key));
                 mouse1Button.Content = key?.ToString() ?? "Unbound";
             }
         }
@@ -80,7 +83,7 @@ namespace KAMI
         private void mouse1Button_LostFocus(object sender, RoutedEventArgs e)
         {
             m_mouse1ButtonChange = false;
-            mouse1Button.Content = m_kami.Mouse1Key?.ToString() ?? "Unbound";
+            mouse1Button.Content = FromVKey(m_kami.Mouse1Key)?.ToString() ?? "Unbound";
         }
 
         private void mouse2Button_Click(object sender, RoutedEventArgs e)
@@ -95,7 +98,7 @@ namespace KAMI
             {
                 m_mouse2ButtonChange = false;
                 Key? key = e.Key != Key.Escape ? e.Key : null;
-                m_kami.SetMouse2Key(key);
+                m_kami.SetMouse2Key(ToVKey(key));
                 mouse2Button.Content = key?.ToString() ?? "Unbound";
             }
         }
@@ -103,7 +106,7 @@ namespace KAMI
         private void mouse2Button_LostFocus(object sender, RoutedEventArgs e)
         {
             m_mouse2ButtonChange = false;
-            mouse2Button.Content = m_kami.Mouse2Key?.ToString() ?? "Unbound";
+            mouse2Button.Content = FromVKey(m_kami.Mouse2Key)?.ToString() ?? "Unbound";
         }
 
         private void sensitivityTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -149,6 +152,16 @@ namespace KAMI
         private void mouseCursorCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             m_kami.SetHideMouseCursor(false);
+        }
+
+        private int? ToVKey(Key? key)
+        {
+            return key != null ? KeyInterop.VirtualKeyFromKey(key.Value) : null;
+        }
+
+        private Key? FromVKey(int? key)
+        {
+            return key != null ? KeyInterop.KeyFromVirtualKey(key.Value) : null;
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using KAMI.Games;
 using System;
 using System.Threading;
-using System.Windows.Input;
 
 namespace KAMI
 {
@@ -26,12 +25,14 @@ namespace KAMI
         public bool Connected { get; private set; } = false;
         public KAMIStatus Status { get; private set; } = KAMIStatus.Unconnected;
         public PineIPC.EmuStatus EmuStatus { get; private set; }
-        public Key? ToggleKey { get; private set; } = null;
-        public Key? Mouse1Key { get; private set; } = null;
-        public Key? Mouse2Key { get; private set; } = null;
+        public int? ToggleKey { get; private set; } = null;
+        public int? Mouse1Key { get; private set; } = null;
+        public int? Mouse2Key { get; private set; } = null;
 
         public delegate void UpdateHandler(object sender, IntPtr ipc);
         public event UpdateHandler OnUpdate;
+        public delegate IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled);
+        public HwndHook KeyboardHwndHook => m_keyHandler.HwndHook;
 
         public KAMICore(IntPtr windowHandle)
         {
@@ -59,19 +60,19 @@ namespace KAMI
             m_thread.Join();
         }
 
-        public void SetToggleKey(Key? key)
+        public void SetToggleKey(int? key)
         {
             ToggleKey = key;
             m_keyHandler.SetHotKey(KeyHandler.KeyType.InjectionToggle, ToggleKey);
         }
 
-        public void SetMouse1Key(Key? key)
+        public void SetMouse1Key(int? key)
         {
             Mouse1Key = key;
             m_keyHandler.SetHotKey(KeyHandler.KeyType.Mouse1, Mouse1Key);
         }
 
-        public void SetMouse2Key(Key? key)
+        public void SetMouse2Key(int? key)
         {
             Mouse2Key = key;
             m_keyHandler.SetHotKey(KeyHandler.KeyType.Mouse2, Mouse2Key);

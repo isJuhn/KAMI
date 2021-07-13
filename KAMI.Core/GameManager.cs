@@ -25,6 +25,7 @@ namespace KAMI
                 case "BLES01294":
                 case "BLUS30758": return new RedDeadRedemption(ipc, id, version);
                 case "BCES00052": return new RatchetToD(ipc);
+                case "BCES00511": return new RatchetACiT(ipc);
                 case "BCES01503": return new Ratchet3PS3(ipc);
                 case "NPUA80646": return new RatchetDLPS3(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
