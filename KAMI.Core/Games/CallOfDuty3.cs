@@ -1,7 +1,7 @@
-﻿using KAMI.Cameras;
+﻿using KAMI.Core.Cameras;
 using System;
 
-namespace KAMI.Games
+namespace KAMI.Core.Games
 {
     public class CallOfDuty3 : Game<HAVACamera>
     {

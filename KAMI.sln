@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KAMI.Windows", "KAMI.Windows\KAMI.Windows.csproj", "{2DF66AAA-D82C-4E0A-9A4F-BA18AF6409C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KAMI.Core", "KAMI.Core\KAMI.Core.csproj", "{1ED00042-6551-4601-9492-0B056D65C932}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KAMI.Core", "KAMI.Core\KAMI.Core.csproj", "{1ED00042-6551-4601-9492-0B056D65C932}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KAMI.Linux", "KAMI.Linux\KAMI.Linux.csproj", "{EF0AC9CE-9DE8-4297-8312-0D8145985D56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,14 @@ Global
 		{1ED00042-6551-4601-9492-0B056D65C932}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1ED00042-6551-4601-9492-0B056D65C932}.Release|x64.ActiveCfg = Release|Any CPU
 		{1ED00042-6551-4601-9492-0B056D65C932}.Release|x64.Build.0 = Release|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Debug|x64.Build.0 = Debug|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Release|x64.ActiveCfg = Release|Any CPU
+		{EF0AC9CE-9DE8-4297-8312-0D8145985D56}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

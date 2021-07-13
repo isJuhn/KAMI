@@ -1,9 +1,7 @@
-﻿using KAMI.Cameras;
+﻿using KAMI.Core.Cameras;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace KAMI.Games
+namespace KAMI.Core.Games
 {
     public interface IGame
     {

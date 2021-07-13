@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace KAMI.Utilities
+namespace KAMI.Core.Utilities
 {
     public class DerefChain
     {

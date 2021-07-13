@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KAMI.Cameras
+namespace KAMI.Core.Cameras
 {
     public class HVecVACamera : ICamera
     {

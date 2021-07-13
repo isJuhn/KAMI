@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KAMI.Cameras
+﻿namespace KAMI.Core.Cameras
 {
     public interface ICamera
     {
