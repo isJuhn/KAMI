@@ -9,10 +9,11 @@ Common requirements:
 * [.NET 5 Runtime](https://dotnet.microsoft.com/download)
 
 For RPCS3:
-* [IPC branch](https://github.com/isJuhn/rpcs3/tree/IPC) of RPCS3
+* [IPC build](https://github.com/RPCS3/rpcs3/pull/10522) of RPCS3
 
 For PCSX2:
 * A recent devbuild with IPC enabled, oldest supported build is `v1.7.0-dev-1177-gedeb0d7bd`
+* Use IPC Port 28012
 
 # Compatibility
 In lieu of a webpage with a compatibility database, for the time being, here's a quick rundown of the currently compatible games:
