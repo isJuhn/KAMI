@@ -16,26 +16,7 @@ For PCSX2:
 * Use IPC Port 28012
 
 # Compatibility
-In lieu of a webpage with a compatibility database, for the time being, here's a quick rundown of the currently compatible games:
-
-## PS2
-- Ratchet &amp; Clank 3: Up your Arsenal (SCUS-97353)
-- Ratchet: Deadlocked (SCUS-97465)
-
-## PS3
-- Ratchet &amp; Clank 3: Up your Arsenal (BCES01503)
-- Ratchet: Deadlocked (NPUA80646)
-- Ratchet &amp; Clank: Tools of Destruction (BCES00052)
-- Resistance: Fall of Man (BCES00001)
-- Resistance 2 (BCES00226)
-- Resistance 3 (BCES01118)
-- Killzone (BCES01743)
-- Killzone 2 (BCES00081)
-- Killzone 3 (all US/EU releases, all versions)
-- NIER: Gestalt (BLUS30481)
-- Persona 5 (all US/EU releases)
-- Red Dead Redemption (all US/EU releases, all versions)
-- Tales of Xillia (all US releases)
+The compatibility list can be found [here](https://isjuhn.github.io/index.html).
 
 # Running
 The application will automatically detect if RPCS3 is running and which game is running. If the game is supported it will automatically connect.
