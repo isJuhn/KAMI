@@ -1,3 +1,4 @@
+refreshenv
 cd "pine/bindings/c"
 meson "build"
 cd "build"

@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-dotnet build "./KAMI.Linux/KAMI.Linux.csproj" -c Release -o "./bin/publish/"
+dotnet build /p:DebugType=None /p:DebugSymbols=false "./KAMI.Linux/KAMI.Linux.csproj" -c Release -o "./bin/publish/"
