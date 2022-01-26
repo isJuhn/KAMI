@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - '*.md'
+      - '.gitignore'
+  pull_request:
+    paths-ignore:
+      - '*.md'
+      - '.gitignore'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      #fail-fast: false
+      matrix:
+        runs-on: [windows-latest] #, ubuntu-latest]
+        #include:
+        #  - runs-on: ubuntu-latest
+        #    file_extension: .sh
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      POWERSHELL_TELEMETRY_OPTOUT: 1
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      #- name: Setup (Linux)
+      #  if: matrix.runs-on == 'ubuntu-latest'
+      #  run: |
+      #    chmod +x *.sh
+      #    sudo apt-get -y update
+      #    sudo apt-get -y install meson ninja-build
+      - name: Setup (Windows)
+        if: matrix.runs-on == 'windows-latest'
+        run: choco install meson ninja
+      - name: Build deps
+        run: ./build_deps${{ matrix.file_extension }}
+      - name: Build
+        run: ./build_publish${{ matrix.file_extension }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: KAMI-${{ runner.os }}
+          path: bin/publish
+          if-no-files-found: error
