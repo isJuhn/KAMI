@@ -27,9 +27,6 @@
     <None Update="pine_c.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="WindowsInput.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup Condition="'$(IsLinux)'=='true'">
