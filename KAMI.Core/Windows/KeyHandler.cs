@@ -2,8 +2,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using WindowsInput;
-using WindowsInput.Native;
 
 namespace KAMI.Core
 {
@@ -25,6 +23,13 @@ namespace KAMI.Core
 
         [DllImport("user32.dll")]
         static extern IntPtr CallNextHookEx(IntPtr idHook, int nCode, UIntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
+
+        [DllImport("user32.dll")]
+        public static extern uint MapVirtualKey(uint uCode, uint uMapType);
+
         const int WM_HOTKEY = 0x0312;
         const int WM_LBUTTONDOWN = 0x0201;
         const int WM_LBUTTONUP = 0x0202;
@@ -38,9 +43,8 @@ namespace KAMI.Core
         IntPtr m_llhook = IntPtr.Zero;
         bool m_mouseHook = false;
         LowLevelMouseProc m_mouseProc;
-        VirtualKeyCode? m_mouse1 = null;
-        VirtualKeyCode? m_mouse2 = null;
-        InputSimulator m_simulator = new InputSimulator();
+        int? m_mouse1 = null;
+        int? m_mouse2 = null;
 
 
         public KeyHandler(IntPtr hwnd, Action<HwndHook> addHookAction)
@@ -62,10 +66,10 @@ namespace KAMI.Core
                     }
                     break;
                 case KeyType.Mouse1:
-                    m_mouse1 = key.HasValue ? (VirtualKeyCode?)key.Value : null;
+                    m_mouse1 = key.HasValue ? key.Value : null;
                     break;
                 case KeyType.Mouse2:
-                    m_mouse2 = key.HasValue ? (VirtualKeyCode?)key.Value : null;
+                    m_mouse2 = key.HasValue ? key.Value : null;
                     break;
             }
         }
@@ -120,28 +124,28 @@ namespace KAMI.Core
                     case WM_LBUTTONDOWN:
                         if (m_mouse1.HasValue)
                         {
-                            m_simulator.Keyboard.KeyDown(m_mouse1.Value);
+                            SendKey(m_mouse1.Value);
                             handled = true;
                         }
                         break;
                     case WM_RBUTTONDOWN:
                         if (m_mouse2.HasValue)
                         {
-                            m_simulator.Keyboard.KeyDown(m_mouse2.Value);
+                            SendKey(m_mouse2.Value);
                             handled = true;
                         }
                         break;
                     case WM_LBUTTONUP:
                         if (m_mouse1.HasValue)
                         {
-                            m_simulator.Keyboard.KeyUp(m_mouse1.Value);
+                            SendKey(m_mouse1.Value, false);
                             handled = true;
                         }
                         break;
                     case WM_RBUTTONUP:
                         if (m_mouse2.HasValue)
                         {
-                            m_simulator.Keyboard.KeyUp(m_mouse2.Value);
+                            SendKey(m_mouse2.Value, false);
                             handled = true;
                         }
                         break;
@@ -154,6 +158,23 @@ namespace KAMI.Core
             return (IntPtr)1;
         }
 
+        private void SendKey(int keyCode, bool down = true)
+        {
+            var input = new INPUT
+            {
+                type = (uint)InputType.INPUT_KEYBOARD,
+                keyboardInput = new KEYBDINPUT
+                {
+                    wVk = (ushort)keyCode,
+                    wScan = (ushort)(MapVirtualKey((uint)m_mouse2.Value, 0) & 0xFFU),
+                    dwFlags = down ? 0u : (uint)InputFlags.KEYEVENTF_KEYUP,
+                    time = 0,
+                    dwExtraInfo = IntPtr.Zero
+                }
+            };
+            SendInput(1, new[] { input }, Marshal.SizeOf(typeof(INPUT)));
+        }
+
         public void Dispose()
         {
             UnregisterHotKey(m_hwnd, (int)KeyType.InjectionToggle);
@@ -162,6 +183,38 @@ namespace KAMI.Core
                 UnhookWindowsHookEx(m_llhook);
             }
         }
+    }
+
+    [StructLayout(LayoutKind.Sequential, Size = 0x28)]
+    internal struct INPUT
+    {
+        internal uint type;
+        internal KEYBDINPUT keyboardInput;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct KEYBDINPUT
+    {
+        internal ushort wVk;
+        internal ushort wScan;
+        internal uint dwFlags;
+        internal uint time;
+        internal IntPtr dwExtraInfo;
+    }
+
+    internal enum InputType
+    {
+        INPUT_MOUSE    = 0,
+        INPUT_KEYBOARD = 1,
+        INPUT_HARDWARE = 2,
+    }
+
+    internal enum InputFlags
+    {
+        KEYEVENTF_EXTENDEDKEY = 1,
+        KEYEVENTF_KEYUP       = 2,
+        KEYEVENTF_UNICODE     = 4,
+        KEYEVENTF_SCANCODE    = 8,
     }
 }
 #endif

@@ -21,9 +21,6 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(IsWindows)'=='true'">
-    <Reference Include="WindowsInput">
-      <HintPath>WindowsInput.dll</HintPath>
-    </Reference>
     <None Update="pine_c.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

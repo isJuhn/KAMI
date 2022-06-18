@@ -2,7 +2,3 @@
 	path = pine
 	url = https://github.com/GovanifY/pine
 	shallow = true
-[submodule "inputsimulator"]
-	path = inputsimulator
-	url = https://github.com/michaelnoonan/inputsimulator
-	shallow = true
