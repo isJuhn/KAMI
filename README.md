@@ -6,7 +6,7 @@ Inject mouse movements into emulated games
 # Requirements
 Common requirements:
 * Windows
-* [.NET 5 Runtime](https://dotnet.microsoft.com/download)
+* [.NET 6 Runtime](https://dotnet.microsoft.com/download)
 
 For RPCS3:
 * [IPC build](https://github.com/RPCS3/rpcs3/pull/10522) of RPCS3
@@ -33,10 +33,10 @@ These features are rather intrusive and as such they are entirely optional. For 
 
 # Building
 ## Requirements
-* .Net 5 SDK
+* .Net 6 SDK
 * To build dependencies, needs C++ build tools and meson + ninja
 
 ## How to build
 * To build dependencies, run `build_deps.bat` in 'x64 Native Tools Command Prompt for VS 2019'
-* To build KAMI using commandline, run `build_publish` in 'x64 Native Tools Command Prompt for VS 2019'
+* To build KAMI using commandline, run `build_publish.bat` in 'x64 Native Tools Command Prompt for VS 2019'
 * To build KAMI using Visual Studio, open `KAMI.sln` and press the big green button.
