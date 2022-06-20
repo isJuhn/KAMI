@@ -31,7 +31,7 @@ namespace KAMI.Core.Games
                 if (m_camera_id == 0x1a)
                 {
                     // Lock-strafe
-                    uint address = 0x101B0050 + 0xC0 + 0xd0 + (uint)m_camera_slot_index * 0x200;
+                    uint address = m_base_address + 0xC0 + 0xd0 + (uint)m_camera_slot_index * 0x200;
 
                     m_camera.X = IPCUtils.ReadFloat(m_ipc, address);
                     m_camera.Y = IPCUtils.ReadFloat(m_ipc, address + 4);
@@ -44,7 +44,7 @@ namespace KAMI.Core.Games
                 else if (m_camera_id == 0x10)
                 {
                     // Aim down sight
-                    uint address = 0x101B0050 + 0xC0 + 0xf4 + (uint)m_camera_slot_index * 0x200;
+                    uint address = m_base_address + 0xC0 + 0xf4 + (uint)m_camera_slot_index * 0x200;
 
                     m_secondary_camera.Hor = IPCUtils.ReadFloat(m_ipc, address);
                     m_secondary_camera.Vert = IPCUtils.ReadFloat(m_ipc, address + 0x8);
