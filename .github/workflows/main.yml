@@ -34,12 +34,15 @@ jobs:
       #    chmod +x *.sh
       #    sudo apt-get -y update
       #    sudo apt-get -y install meson ninja-build
-      - name: Setup (Windows)
+      - name: Build PINE (Windows)
         if: matrix.runs-on == 'windows-latest'
-        run: choco install meson ninja
-      - name: Build deps
-        run: ./build_deps${{ matrix.file_extension }}
-      - name: Build
+        run: |
+          python -m pip install meson ninja
+          cd "pine/bindings/c"
+          meson setup "build" --vsenv
+          meson compile -C "build"
+          copy "build/pine_c.dll" "../../../KAMI.Core"
+      - name: Build KAMI
         run: ./build_publish${{ matrix.file_extension }}
       - uses: actions/upload-artifact@v2
         with:
