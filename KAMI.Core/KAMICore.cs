@@ -1,4 +1,5 @@
 ﻿using KAMI.Core.Games;
+using KAMI.Core.Utilities;
 using System;
 using System.Threading;
 
@@ -19,15 +20,13 @@ namespace KAMI.Core
         MouseHandler m_mouseHandler;
         IKeyHandler m_keyHandler;
         Thread m_thread;
-        bool m_hideMouseCursor = false;
+        ConfigManager<KamiConfig> m_configManager;
         bool m_closing = false;
+        public KamiConfig Config => m_configManager.Config;
         public bool Injecting { get; private set; } = false;
         public bool Connected { get; private set; } = false;
         public KAMIStatus Status { get; private set; } = KAMIStatus.Unconnected;
         public PineIPC.EmuStatus EmuStatus { get; private set; }
-        public int? ToggleKey { get; private set; } = null;
-        public int? Mouse1Key { get; private set; } = null;
-        public int? Mouse2Key { get; private set; } = null;
 
         public delegate void UpdateHandler(object sender, IntPtr ipc);
         public event UpdateHandler OnUpdate;
@@ -35,6 +34,7 @@ namespace KAMI.Core
 #if Windows
         public KAMICore(IntPtr windowHandle, Action<HwndHook> addHookAction)
         {
+            m_configManager = new ConfigManager<KamiConfig>("config.json");
             m_ipc = PineIPC.NewRpcs3();
             m_mouseHandler = new MouseHandler();
             m_keyHandler = new KeyHandler(windowHandle, addHookAction);
@@ -45,6 +45,7 @@ namespace KAMI.Core
 #elif Linux
         public KAMICore()
         {
+            m_config = new ConfigManager<KamiConfig>("~/.config/rpcs3/config.json");
             m_ipc = PineIPC.NewRpcs3();
             m_mouseHandler = new MouseHandler();
             m_keyHandler = new KeyHandler();
@@ -60,7 +61,7 @@ namespace KAMI.Core
 
         public void Stop()
         {
-            if (m_hideMouseCursor)
+            if (m_configManager.Config.HideCursor)
             {
                 MouseCursor.ShowCursor();
             }
@@ -72,24 +73,29 @@ namespace KAMI.Core
 
         public void SetToggleKey(int? key)
         {
-            ToggleKey = key;
-            m_keyHandler.SetHotKey(KeyType.InjectionToggle, ToggleKey);
+            m_configManager.Config.ToggleKey = key;
+            m_configManager.WriteConfig();
+            m_keyHandler.SetHotKey(KeyType.InjectionToggle, key);
         }
 
         public void SetMouse1Key(int? key)
         {
-            Mouse1Key = key;
-            m_keyHandler.SetHotKey(KeyType.Mouse1, Mouse1Key);
+            m_configManager.Config.Mouse1Key = key;
+            m_configManager.WriteConfig();
+            m_keyHandler.SetHotKey(KeyType.Mouse1, key);
         }
 
         public void SetMouse2Key(int? key)
         {
-            Mouse2Key = key;
-            m_keyHandler.SetHotKey(KeyType.Mouse2, Mouse2Key);
+            m_configManager.Config.Mouse2Key = key;
+            m_configManager.WriteConfig();
+            m_keyHandler.SetHotKey(KeyType.Mouse2, key);
         }
 
         public void SetSensitivity(float sensitivity)
         {
+            m_configManager.Config.Sensitivity = sensitivity;
+            m_configManager.WriteConfig();
             if (m_game != null)
             {
                 m_game.SensModifier = sensitivity;
@@ -98,7 +104,8 @@ namespace KAMI.Core
 
         public void SetHideMouseCursor(bool hideMouseCursor)
         {
-            m_hideMouseCursor = hideMouseCursor;
+            m_configManager.Config.HideCursor = hideMouseCursor;
+            m_configManager.WriteConfig();
         }
 
         private void ToggleInjector()
@@ -111,12 +118,12 @@ namespace KAMI.Core
                     m_game.InjectionStart();
                     m_mouseHandler.GetCenterDiff();
                     m_mouseHandler.SetCursorCenter();
-                    if (m_hideMouseCursor)
+                    if (m_configManager.Config.HideCursor)
                     {
                         MouseCursor.HideCursor();
                     }
                 }
-                else if (m_hideMouseCursor)
+                else if (m_configManager.Config.HideCursor)
                 {
                     MouseCursor.ShowCursor();
                 }
@@ -166,6 +173,7 @@ namespace KAMI.Core
                         string titleId = PineIPC.GetGameID(m_ipc);
                         string gameVersion = PineIPC.GetGameVersion(m_ipc);
                         m_game = GameManager.GetGame(m_ipc, titleId, gameVersion);
+                        m_game.SensModifier = m_configManager.Config.Sensitivity;
                     }
                     break;
                 case KAMIStatus.Ready:

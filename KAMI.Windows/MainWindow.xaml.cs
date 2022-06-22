@@ -9,8 +9,6 @@ using System.Windows.Media;
 
 namespace KAMI.Windows
 {
-
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -32,6 +30,13 @@ namespace KAMI.Windows
             HwndSource source = HwndSource.FromHwnd(hwnd);
             m_kami = new KAMICore(hwnd, (hwndHook) => source.AddHook(new HwndSourceHook(hwndHook)));
             m_kami.OnUpdate += (object sender, IntPtr ipc) => UpdateGui(ipc);
+
+            toggleButton.Content = FromVKey(m_kami.Config.ToggleKey)?.ToString() ?? "Unbound";
+            mouse1Button.Content = FromVKey(m_kami.Config.Mouse1Key)?.ToString() ?? "Unbound";
+            mouse2Button.Content = FromVKey(m_kami.Config.Mouse2Key)?.ToString() ?? "Unbound";
+            sensitivityTextBox.Text = m_kami.Config.Sensitivity.ToString(CultureInfo.InvariantCulture);
+            mouseCursorCheckBox.IsChecked = m_kami.Config.HideCursor;
+
             m_kami.Start();
         }
 
@@ -60,7 +65,7 @@ namespace KAMI.Windows
         private void toggleButton_LostFocus(object sender, RoutedEventArgs e)
         {
             m_toggleButtonChange = false;
-            toggleButton.Content = FromVKey(m_kami.ToggleKey)?.ToString() ?? "Unbound";
+            toggleButton.Content = FromVKey(m_kami.Config.ToggleKey)?.ToString() ?? "Unbound";
         }
 
         private void mouse1Button_Click(object sender, RoutedEventArgs e)
@@ -83,7 +88,7 @@ namespace KAMI.Windows
         private void mouse1Button_LostFocus(object sender, RoutedEventArgs e)
         {
             m_mouse1ButtonChange = false;
-            mouse1Button.Content = FromVKey(m_kami.Mouse1Key)?.ToString() ?? "Unbound";
+            mouse1Button.Content = FromVKey(m_kami.Config.Mouse1Key)?.ToString() ?? "Unbound";
         }
 
         private void mouse2Button_Click(object sender, RoutedEventArgs e)
@@ -106,7 +111,7 @@ namespace KAMI.Windows
         private void mouse2Button_LostFocus(object sender, RoutedEventArgs e)
         {
             m_mouse2ButtonChange = false;
-            mouse2Button.Content = FromVKey(m_kami.Mouse2Key)?.ToString() ?? "Unbound";
+            mouse2Button.Content = FromVKey(m_kami.Config.Mouse2Key)?.ToString() ?? "Unbound";
         }
 
         private void sensitivityTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -133,7 +138,7 @@ namespace KAMI.Windows
             {
                 if (m_kami.Connected)
                 {
-                    infoLabel.Content = $"Version:      {version}\n";
+                    infoLabel.Content  = $"Version:      {version}\n";
                     infoLabel.Content += $"Title:        {title}\n";
                     infoLabel.Content += $"TitleId:      {titleId}\n";
                     infoLabel.Content += $"Game Version: {gameVersion}\n";
