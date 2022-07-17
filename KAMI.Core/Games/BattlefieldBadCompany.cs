@@ -8,10 +8,11 @@ namespace KAMI.Core.Games
     {
         DerefChain m_addr;
 
-        public BattlefieldBadCompany(IntPtr ipc) : base(ipc)
+        public BattlefieldBadCompany(IntPtr ipc, string serialId) : base(ipc)
         {
-                                                                    // 0x1b8, 0...?
-            m_addr = DerefChain.CreateDerefChain(ipc, 0x15A5A88, 0x1c, 0x1c0, 0x14, 0x2c, 0x4, 0x4, 0x8, 0x4, 0x1bc, 0x20c, 0x3c, 0x8, 0x8);
+            int baseAddress = serialId == "BLES00261" ? 0x15A5A88 : 0x15BFF28;
+                                                                      // 0x1b8, 0...?
+            m_addr = DerefChain.CreateDerefChain(ipc, baseAddress, 0x1c, 0x1c0, 0x14, 0x2c, 0x4, 0x4, 0x8, 0x4, 0x1bc, 0x20c, 0x3c, 0x8, 0x8);
         }
 
         public override void UpdateCamera(int diffX, int diffY)
