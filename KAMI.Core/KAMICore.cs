@@ -21,6 +21,7 @@ namespace KAMI.Core
         IKeyHandler m_keyHandler;
         Thread m_thread;
         ConfigManager<KamiConfig> m_configManager;
+        Action<Exception> m_exceptionCallback;
         bool m_closing = false;
         public KamiConfig Config => m_configManager.Config;
         public bool Injecting { get; private set; } = false;
@@ -32,7 +33,7 @@ namespace KAMI.Core
         public event UpdateHandler OnUpdate;
 
 #if Windows
-        public KAMICore(IntPtr windowHandle, Action<HwndHook> addHookAction)
+        public KAMICore(IntPtr windowHandle, Action<HwndHook> addHookAction, Action<Exception> exceptionCallback)
         {
             m_configManager = new ConfigManager<KamiConfig>("config.json");
             m_ipc = PineIPC.NewRpcs3();
@@ -40,6 +41,7 @@ namespace KAMI.Core
             m_keyHandler = new KeyHandler(windowHandle, addHookAction);
             m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
             m_thread = new Thread(UpdateFunction);
+            m_exceptionCallback = exceptionCallback;
         }
 
 #elif Linux
@@ -207,25 +209,39 @@ namespace KAMI.Core
         {
             while (!m_closing)
             {
-                CheckStatus();
-                UpdateState();
-                if (OnUpdate != null)
+                try
                 {
-                    OnUpdate(this, m_ipc);
+                    CheckStatus();
+                    UpdateState();
+                    if (OnUpdate != null)
+                    {
+                        OnUpdate(this, m_ipc);
+                    }
+                    if (Status == KAMIStatus.Injecting)
+                    {
+                        var (diffX, diffY) = m_mouseHandler.GetCenterDiff();
+                        m_game.UpdateCamera(diffX, diffY);
+                        m_mouseHandler.SetCursorCenter();
+                    }
+                    if (!Connected)
+                    {
+                        Thread.Sleep(100);
+                    }
+                    else
+                    {
+                        Thread.Sleep(8);
+                    }
                 }
-                if (Status == KAMIStatus.Injecting)
+                catch (Exception ex)
                 {
-                    var (diffX, diffY) = m_mouseHandler.GetCenterDiff();
-                    m_game.UpdateCamera(diffX, diffY);
-                    m_mouseHandler.SetCursorCenter();
-                }
-                if (!Connected)
-                {
-                    Thread.Sleep(100);
-                }
-                else
-                {
-                    Thread.Sleep(8);
+                    if (m_exceptionCallback != null)
+                    {
+                        m_exceptionCallback(ex);
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
             }
         }

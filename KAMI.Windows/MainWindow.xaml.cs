@@ -26,23 +26,36 @@ namespace KAMI.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            IntPtr hwnd = new WindowInteropHelper(this).Handle;
-            HwndSource source = HwndSource.FromHwnd(hwnd);
-            m_kami = new KAMICore(hwnd, (hwndHook) => source.AddHook(new HwndSourceHook(hwndHook)));
-            m_kami.OnUpdate += (object sender, IntPtr ipc) => UpdateGui(ipc);
+            try
+            {
+                IntPtr hwnd = new WindowInteropHelper(this).Handle;
+                HwndSource source = HwndSource.FromHwnd(hwnd);
+                m_kami = new KAMICore(hwnd, (hwndHook) => source.AddHook(new HwndSourceHook(hwndHook)), OnException);
+                m_kami.OnUpdate += (object sender, IntPtr ipc) => UpdateGui(ipc);
 
-            toggleButton.Content = FromVKey(m_kami.Config.ToggleKey)?.ToString() ?? "Unbound";
-            mouse1Button.Content = FromVKey(m_kami.Config.Mouse1Key)?.ToString() ?? "Unbound";
-            mouse2Button.Content = FromVKey(m_kami.Config.Mouse2Key)?.ToString() ?? "Unbound";
-            sensitivityTextBox.Text = m_kami.Config.Sensitivity.ToString(CultureInfo.InvariantCulture);
-            mouseCursorCheckBox.IsChecked = m_kami.Config.HideCursor;
+                toggleButton.Content = FromVKey(m_kami.Config.ToggleKey)?.ToString() ?? "Unbound";
+                mouse1Button.Content = FromVKey(m_kami.Config.Mouse1Key)?.ToString() ?? "Unbound";
+                mouse2Button.Content = FromVKey(m_kami.Config.Mouse2Key)?.ToString() ?? "Unbound";
+                sensitivityTextBox.Text = m_kami.Config.Sensitivity.ToString(CultureInfo.InvariantCulture);
+                mouseCursorCheckBox.IsChecked = m_kami.Config.HideCursor;
 
-            m_kami.Start();
+                m_kami.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                throw;
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             m_kami.Stop();
+        }
+
+        private void OnException(Exception ex)
+        {
+            MessageBox.Show(ex.Message);
         }
 
         private void toggleButton_Click(object sender, RoutedEventArgs e)
