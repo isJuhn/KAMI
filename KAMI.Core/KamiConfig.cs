@@ -9,14 +9,16 @@ namespace KAMI.Core
         public int? Mouse2Key { get; internal set; }
         public float Sensitivity { get; internal set; }
         public bool HideCursor { get; internal set; }
+        public MouseHandlerEnum MouseHandler { get; internal set; }
 
-        public KamiConfig(int? toggleKey, int? mouse1Key, int? mouse2Key, float sensitivity, bool hideCursor)
+        public KamiConfig(int? toggleKey, int? mouse1Key, int? mouse2Key, float sensitivity, bool hideCursor, MouseHandlerEnum mouseHandler)
         {
             ToggleKey = toggleKey;
             Mouse1Key = mouse1Key;
             Mouse2Key = mouse2Key;
             Sensitivity = sensitivity;
             HideCursor = hideCursor;
+            MouseHandler = mouseHandler;
         }
 
         public static IConfig GetDefaultConfig()
@@ -27,8 +29,15 @@ namespace KAMI.Core
                 mouse1Key: null,
                 mouse2Key: null,
                 sensitivity: 0.003f,
-                hideCursor: false
+                hideCursor: false,
+                mouseHandler: MouseHandlerEnum.Cursor
             );
         }
+    }
+
+    public enum MouseHandlerEnum
+    {
+        Cursor,
+        RawInput
     }
 }

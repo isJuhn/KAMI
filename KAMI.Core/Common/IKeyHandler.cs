@@ -1,6 +1,6 @@
 using System;
 
-namespace KAMI.Core
+namespace KAMI.Core.Common
 {
     public enum KeyType
     {
@@ -10,7 +10,7 @@ namespace KAMI.Core
     }
 
     public delegate void KeyPressHandler(object sender);
-    public interface IKeyHandler: IDisposable
+    public interface IKeyHandler : IDisposable
     {
         public event KeyPressHandler OnKeyPress;
         public void SetHotKey(KeyType keyType, int? key);

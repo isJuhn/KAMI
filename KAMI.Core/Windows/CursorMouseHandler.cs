@@ -1,17 +1,11 @@
-﻿using System;
+﻿using KAMI.Core.Windows;
+using System;
 using System.Runtime.InteropServices;
 
 namespace KAMI.Core
 {
-    public class MouseHandler
+    internal class CursorMouseHandler : BaseMouseHandler
     {
-        [DllImport("user32.dll")]
-        static extern IntPtr GetForegroundWindow();
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetCursorPos(out POINT lpPoint);
@@ -20,18 +14,14 @@ namespace KAMI.Core
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool SetCursorPos(int x, int y);
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
-
         int m_centerX = 0;
         int m_centerY = 0;
 
-        public (int, int) GetCenterDiff()
+        public override (int, int) GetCenterDiff()
         {
             IntPtr handle = GetForegroundWindow();
-            RECT rect;
-            if (GetClientRect(handle, out rect))
+            var ret = (0, 0);
+            if (GetClientRect(handle, out RECT rect))
             {
                 POINT centerPos = new POINT(rect.Right / 2, rect.Bottom / 2);
                 if (ClientToScreen(handle, ref centerPos))
@@ -43,16 +33,12 @@ namespace KAMI.Core
                     {
                         int diffX = pos.X - m_centerX;
                         int diffY = pos.Y - m_centerY;
-                        return (diffX, diffY);
+                        ret = (diffX, diffY);
                     }
                 }
             }
-            return (0, 0);
-        }
-
-        public void SetCursorCenter()
-        {
             SetCursorPos(m_centerX, m_centerY);
+            return ret;
         }
     }
 
