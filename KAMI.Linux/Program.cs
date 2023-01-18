@@ -1,3 +1,4 @@
+using KAMI.Core;
 using System;
 
 namespace KAMI.Linux
