@@ -36,8 +36,8 @@ namespace KAMI.Core
                 case "BLES00016": return new CallOfDuty3(ipc);
                 case "BLES00261":
                 case "BLUS30118": return new BattlefieldBadCompany(ipc, id);
-                case " [SCUS-97353]": return new Ratchet3PS2(ipc);
-                case " [SCUS-97465]": return new RatchetDLPS2(ipc);
+                case "SCUS-97353": return new Ratchet3PS2(ipc);
+                case "SCUS-97465": return new RatchetDLPS2(ipc);
                 case "SLUS-21376": return new BlackPS2(ipc);
                 default:
                     throw new NotImplementedException($"Game with id '{id}' not implemented");
