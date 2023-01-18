@@ -1,21 +1,21 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace KAMI.Core.Utilities
 {
     public class ConfigManager<TConfig> where TConfig : IConfig
     {
-        public TConfig Config { get; private set; } = default;
-        public string FileName { get; init; }
+        internal TConfig Config { get; private set; } = default;
+        private string FileName { get; init; }
 
-        public ConfigManager(string fileName)
+        internal ConfigManager(string fileName)
         {
             FileName = fileName;
-            ReloadConfig();
         }
 
-        public void ReloadConfig()
+        internal void ReloadConfig()
         {
             if (!File.Exists(FileName))
             {
@@ -24,7 +24,7 @@ namespace KAMI.Core.Utilities
                 return;
             }
             string json = File.ReadAllText(FileName);
-            var config = JsonSerializer.Deserialize<TConfig>(json);
+            var config = JsonSerializer.Deserialize<TConfig>(json, SerializerOptions);
             if (config == null)
             {
                 throw new Exception("Failed to load config");
@@ -32,11 +32,19 @@ namespace KAMI.Core.Utilities
             Config = config;
         }
 
-        public void WriteConfig()
+        internal void WriteConfig()
         {
-            string json = JsonSerializer.Serialize(Config);
+            string json = JsonSerializer.Serialize(Config, SerializerOptions);
             File.WriteAllText(FileName, json);
             ReloadConfig();
         }
+
+        private static readonly JsonSerializerOptions SerializerOptions = new()
+        {
+            WriteIndented = true,
+            Converters = {
+                new JsonStringEnumConverter()
+            }
+        };
     }
 }

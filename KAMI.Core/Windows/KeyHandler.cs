@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using KAMI.Core.Common;
 
 namespace KAMI.Core
 {
