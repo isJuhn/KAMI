@@ -1,12 +1,15 @@
 ﻿using KAMI.Core.Games;
 using System;
+using System.Text.RegularExpressions;
 
 namespace KAMI.Core
 {
     public static class GameManager
     {
+        const string PCSX2BiosPattern = @"\d{8}-\d{6}";
         public static IGame GetGame(IntPtr ipc, string id, string version)
         {
+            if (Regex.IsMatch(id, PCSX2BiosPattern)) return new MockGame();
             switch (id)
             {
                 case "BLUS31006":
