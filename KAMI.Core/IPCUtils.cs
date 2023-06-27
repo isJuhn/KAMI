@@ -47,6 +47,5 @@ namespace KAMI.Core
             Write(ipc, address, value, IPCCommand.MsgWrite16);
             Error = GetError(ipc);
         }
-
     }
 }
