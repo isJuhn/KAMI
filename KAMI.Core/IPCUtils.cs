@@ -34,5 +34,18 @@ namespace KAMI.Core
             Write(ipc, address, value, IPCCommand.MsgWrite32);
             Error = GetError(ipc);
         }
+
+        public static ushort ReadU16(IntPtr ipc, uint address)
+        {
+            ushort value = (ushort)Read(ipc, address, IPCCommand.MsgRead16);
+            Error = GetError(ipc);
+            return value;
+        }
+
+        public static void WriteU16(IntPtr ipc, uint address, ushort value)
+        {
+            Write(ipc, address, value, IPCCommand.MsgWrite16);
+            Error = GetError(ipc);
+        }
     }
 }

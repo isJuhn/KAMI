@@ -42,6 +42,12 @@ namespace KAMI.Core
                 case "SCUS-97353": return new Ratchet3PS2(ipc);
                 case "SCUS-97465": return new RatchetDLPS2(ipc);
                 case "SLUS-21376": return new BlackPS2(ipc);
+                case "NPUB31633":
+                case "NPEB02182":
+                case "NPJB00698":
+                case "BLES00246":
+                case "BLJM67001":
+                case "BLUS30109": return new MetalGearSolid4(ipc, id, version);
                 default:
                     throw new NotImplementedException($"Game with id '{id}' not implemented");
             }
