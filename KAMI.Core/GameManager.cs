@@ -4,11 +4,17 @@ using System.Text.RegularExpressions;
 
 namespace KAMI.Core
 {
-    public static class GameManager
+    public class GameManager
     {
         const string PCSX2BiosPattern = @"\d{8}-\d{6}";
-        public static IGame GetGame(IntPtr ipc, string id, string version)
+
+        public string CurrentGameId { get; private set; }
+        public string CurrentGameVersion { get; private set; }
+
+        public IGame GetGame(IntPtr ipc, string id, string version)
         {
+            CurrentGameId = id;
+            CurrentGameVersion = version;
             if (Regex.IsMatch(id, PCSX2BiosPattern)) return new MockGame();
             switch (id)
             {

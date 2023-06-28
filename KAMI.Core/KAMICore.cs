@@ -23,6 +23,7 @@ namespace KAMI.Core
         IKeyHandler m_keyHandler;
         Thread m_thread;
         ConfigManager<KamiConfig> m_configManager;
+        GameManager m_gameManager;
         Action<Exception> m_exceptionCallback;
         bool m_closing = false;
         public KamiConfig Config => m_configManager.Config;
@@ -42,6 +43,7 @@ namespace KAMI.Core
             this.windowHandle = windowHandle;
             this.addHookAction = addHookAction;
             m_configManager = new ConfigManager<KamiConfig>("config.json");
+            m_gameManager = new GameManager();
             m_ipc = PineIPC.NewRpcs3();
             m_keyHandler = new KeyHandler(windowHandle, addHookAction);
             m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
@@ -206,7 +208,7 @@ namespace KAMI.Core
                     {
                         string titleId = PineIPC.GetGameID(m_ipc);
                         string gameVersion = PineIPC.GetGameVersion(m_ipc);
-                        m_game = GameManager.GetGame(m_ipc, titleId, gameVersion);
+                        m_game = m_gameManager.GetGame(m_ipc, titleId, gameVersion);
                         m_game.SensModifier = Config.Sensitivity;
                     }
                     break;
@@ -219,6 +221,16 @@ namespace KAMI.Core
                     else if (EmuStatus == PineIPC.EmuStatus.Shutdown)
                     {
                         m_game = null;
+                    }
+                    else
+                    {
+                        string titleId = PineIPC.GetGameID(m_ipc);
+                        string gameVersion = PineIPC.GetGameVersion(m_ipc);
+                        if (m_gameManager.CurrentGameId != titleId || m_gameManager.CurrentGameVersion != gameVersion)
+                        {
+                            m_game = m_gameManager.GetGame(m_ipc, titleId, gameVersion);
+                            m_game.SensModifier = Config.Sensitivity;
+                        }
                     }
                     break;
                 case KAMIStatus.Injecting:
