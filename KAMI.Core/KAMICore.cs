@@ -148,6 +148,18 @@ namespace KAMI.Core
             m_configManager.WriteConfig();
         }
 
+        public void SetInvertX(bool invertX)
+        {
+            Config.InvertX = invertX;
+            m_configManager.WriteConfig();
+        }
+
+        public void SetInvertY(bool invertY)
+        {
+            Config.InvertY = invertY;
+            m_configManager.WriteConfig();
+        }
+
         public void SetEmulator(bool pcsx2)
         {
             if (Config.UsePCSX2 == pcsx2) return;
@@ -293,6 +305,8 @@ namespace KAMI.Core
                     if (Status == KAMIStatus.Injecting)
                     {
                         var (diffX, diffY) = m_mouseHandler.GetCenterDiff();
+                        if (Config.InvertX) diffX = -diffX;
+                        if (Config.InvertY) diffY = -diffY;
                         m_game.UpdateCamera(diffX, diffY);
                     }
                     if (!Connected)
