@@ -44,12 +44,12 @@ namespace KAMI.Core
             this.addHookAction = addHookAction;
             m_configManager = new ConfigManager<KamiConfig>("config.json");
             m_gameManager = new GameManager();
-            m_ipc = PineIPC.NewRpcs3();
             m_keyHandler = new KeyHandler(windowHandle, addHookAction);
             m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
             m_thread = new Thread(UpdateFunction);
             m_exceptionCallback = exceptionCallback;
             ReloadConfig();
+            m_ipc = Config.UsePCSX2 ? PineIPC.NewPcsx2() : PineIPC.NewRpcs3();
         }
 
 #elif Linux
@@ -71,12 +71,20 @@ namespace KAMI.Core
 
         public void Stop()
         {
+            if (Config.UsePCSX2)
+            {
+                PineIPC.DeletePcsx2(m_ipc);
+            }
+            else
+            {
+                PineIPC.DeleteRpcs3(m_ipc);
+            }
+
             if (Config.HideCursor)
             {
                 MouseCursor.ShowCursor();
             }
             m_mouseHandler.ReleaseCursor();
-            PineIPC.DeleteRpcs3(m_ipc);
             m_keyHandler.Dispose();
             m_closing = true;
             m_thread.Join();
@@ -138,6 +146,27 @@ namespace KAMI.Core
         {
             Config.HideCursor = hideMouseCursor;
             m_configManager.WriteConfig();
+        }
+
+        public void SetEmulator(bool pcsx2)
+        {
+            if (Config.UsePCSX2 == pcsx2) return;
+
+            bool started = m_thread?.IsAlive == true;
+
+            if (started) Stop();
+            Config.UsePCSX2 = pcsx2;
+            m_configManager.WriteConfig();
+            m_ipc = Config.UsePCSX2 ? PineIPC.NewPcsx2() : PineIPC.NewRpcs3();
+            m_thread = new Thread(UpdateFunction);
+            m_closing = false;
+            if (started)
+            {
+                m_keyHandler = new KeyHandler(windowHandle, addHookAction);
+                m_keyHandler.OnKeyPress += (object sender) => ToggleInjector();
+                Start();
+            }
+            ReloadConfig();
         }
 
         private void ToggleInjector()
