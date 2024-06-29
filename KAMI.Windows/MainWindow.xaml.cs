@@ -38,6 +38,7 @@ namespace KAMI.Windows
                 mouse2Button.Content = FromVKey(m_kami.Config.Mouse2Key)?.ToString() ?? "Unbound";
                 sensitivityTextBox.Text = m_kami.Config.Sensitivity.ToString(CultureInfo.InvariantCulture);
                 mouseCursorCheckBox.IsChecked = m_kami.Config.HideCursor;
+                pcsx2CheckBox.IsChecked = m_kami.Config.UsePCSX2;
 
                 m_kami.Start();
             }
@@ -180,6 +181,16 @@ namespace KAMI.Windows
         private Key? FromVKey(int? key)
         {
             return key != null ? KeyInterop.KeyFromVirtualKey(key.Value) : null;
+        }
+
+        private void pcsx2CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            m_kami.SetEmulator(true);
+        }
+
+        private void pcsx2CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            m_kami.SetEmulator(false);
         }
     }
 }

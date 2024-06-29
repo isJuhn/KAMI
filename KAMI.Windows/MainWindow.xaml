@@ -19,6 +19,7 @@
         <Label x:Name="mouse1Label" Content="Mouse1:" HorizontalAlignment="Left" Margin="191,7,0,0" VerticalAlignment="Top"/>
         <Label x:Name="mouse2Label" Content="Mouse2:" HorizontalAlignment="Left" Margin="191,32,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="mouseCursorCheckBox" Content="Hide mouse cursor" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Checked="mouseCursorCheckBox_Checked" Unchecked="mouseCursorCheckBox_Unchecked"/>
+        <CheckBox x:Name="pcsx2CheckBox" Content="Use PCSX2" HorizontalAlignment="Left" Margin="209,104,0,0" VerticalAlignment="Top" Checked="pcsx2CheckBox_Checked" Unchecked="pcsx2CheckBox_Unchecked"/>
 
     </Grid>
 </Window>
