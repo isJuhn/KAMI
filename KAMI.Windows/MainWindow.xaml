@@ -12,14 +12,16 @@
         <Button x:Name="toggleButton" Content="Unbound" HorizontalAlignment="Left" Margin="107,44,0,0" VerticalAlignment="Top" Width="59" Click="toggleButton_Click" KeyDown="toggleButton_KeyDown" LostFocus="toggleButton_LostFocus"/>
         <Label x:Name="sensitivityLabel" Content="Sensitivity: " HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="sensitivityTextBox" HorizontalAlignment="Left" Margin="84,76,0,0" Text="0.003" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="sensitivityTextBox_TextChanged"/>
-        <Label x:Name="infoLabel" Content="Info:" HorizontalAlignment="Left" Margin="10,124,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="infoLabel" Content="Info:" HorizontalAlignment="Left" Margin="10,143,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.574,0.139"/>
         <Ellipse x:Name="sensitivityEllipse" HorizontalAlignment="Left" Height="18" Margin="209,76,0,0" VerticalAlignment="Top" Width="18" Fill="DarkGreen"/>
         <Button x:Name="mouse1Button" Content="Unbound" HorizontalAlignment="Left" Margin="251,10,0,0" VerticalAlignment="Top" Click="mouse1Button_Click" KeyDown="mouse1Button_KeyDown" LostFocus="mouse1Button_LostFocus"/>
         <Button x:Name="mouse2Button" Content="Unbound" HorizontalAlignment="Left" Margin="251,35,0,0" VerticalAlignment="Top" Click="mouse2Button_Click" KeyDown="mouse2Button_KeyDown" LostFocus="mouse2Button_LostFocus"/>
         <Label x:Name="mouse1Label" Content="Mouse1:" HorizontalAlignment="Left" Margin="191,7,0,0" VerticalAlignment="Top"/>
         <Label x:Name="mouse2Label" Content="Mouse2:" HorizontalAlignment="Left" Margin="191,32,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="mouseCursorCheckBox" Content="Hide mouse cursor" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" Checked="mouseCursorCheckBox_Checked" Unchecked="mouseCursorCheckBox_Unchecked"/>
-        <CheckBox x:Name="pcsx2CheckBox" Content="Use PCSX2" HorizontalAlignment="Left" Margin="209,104,0,0" VerticalAlignment="Top" Checked="pcsx2CheckBox_Checked" Unchecked="pcsx2CheckBox_Unchecked"/>
+        <CheckBox x:Name="pcsx2CheckBox" Content="Use PCSX2" HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top" Checked="pcsx2CheckBox_Checked" Unchecked="pcsx2CheckBox_Unchecked"/>
+        <CheckBox x:Name="invertXCheckBox" Content="Invert X" HorizontalAlignment="Left" Margin="201,104,0,0" VerticalAlignment="Top" Checked="invertXCheckBox_Checked" Unchecked="invertXCheckBox_Unchecked"/>
+        <CheckBox x:Name="invertYCheckBox" Content="Invert Y" HorizontalAlignment="Left" Margin="201,126,0,0" VerticalAlignment="Top" Checked="invertYCheckBox_Checked" Unchecked="invertYCheckBox_Unchecked"/>
 
     </Grid>
 </Window>

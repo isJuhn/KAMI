@@ -39,6 +39,8 @@ namespace KAMI.Windows
                 sensitivityTextBox.Text = m_kami.Config.Sensitivity.ToString(CultureInfo.InvariantCulture);
                 mouseCursorCheckBox.IsChecked = m_kami.Config.HideCursor;
                 pcsx2CheckBox.IsChecked = m_kami.Config.UsePCSX2;
+                invertXCheckBox.IsChecked = m_kami.Config.InvertX;
+                invertYCheckBox.IsChecked = m_kami.Config.InvertY;
 
                 m_kami.Start();
             }
@@ -191,6 +193,26 @@ namespace KAMI.Windows
         private void pcsx2CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             m_kami.SetEmulator(false);
+        }
+
+        private void invertXCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            m_kami.SetInvertX(true);
+        }
+
+        private void invertXCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            m_kami.SetInvertX(false);
+        }
+
+        private void invertYCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            m_kami.SetInvertY(true);
+        }
+
+        private void invertYCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            m_kami.SetInvertY(false);
         }
     }
 }
