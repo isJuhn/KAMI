@@ -36,6 +36,9 @@ namespace KAMI.Core
                 case "BCES01503": return new Ratchet3PS3(ipc);
                 case "NPUA80646": return new RatchetDLPS3(ipc);
                 case "BCES01743": return new Killzone1PS3(ipc);
+                case "BCAS20066":
+                case "BCUS98116":
+                case "BCJS30032":
                 case "BCES00081": return new Killzone2PS3(ipc, version);
                 case "BCUS98234":
                 case "BCES01007": return new Killzone3PS3(ipc, version);
