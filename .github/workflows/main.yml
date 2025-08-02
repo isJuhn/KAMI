@@ -25,7 +25,7 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
       POWERSHELL_TELEMETRY_OPTOUT: 1
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
       #- name: Setup (Linux)
@@ -44,7 +44,7 @@ jobs:
           cp "build\pine_c.dll" "..\..\..\KAMI.Core"
       - name: Build KAMI
         run: ./build_publish${{ matrix.file_extension }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: KAMI-${{ runner.os }}
           path: bin/publish
