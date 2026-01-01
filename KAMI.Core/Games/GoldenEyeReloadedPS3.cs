@@ -28,11 +28,6 @@ namespace KAMI.Core.Games
             );
             m_vert = commonCameraChain.Chain(0x84c);
             m_hor = commonCameraChain.Chain(0x14).Chain(0xFC).Chain(0x274); // HorX at +8
-
-            System.Diagnostics.Debug.WriteLine($"GoldenEyeReloadedPS3 Vert Addr: 0x{m_vert.Value:X}");
-            System.Diagnostics.Debug.WriteLine($"GoldenEyeReloadedPS3 Hor AddrY: 0x{m_hor.Value:X}");
-            System.Diagnostics.Debug.WriteLine($"GoldenEyeReloadedPS3 Hor AddrX: 0x{(m_hor.Value + 8):X}");
-            System.Diagnostics.Debug.WriteLine($"GoldenEyeReloadedPS3 Version: {version}");
         }
 
         public override void UpdateCamera(int diffX, int diffY)
