@@ -57,6 +57,7 @@ namespace KAMI.Core
                 case "BLES00246":
                 case "BLJM67001":
                 case "BLUS30109": return new MetalGearSolid4(ipc, id, version);
+                case "BLES01292": return new GoldenEyeReloadedPS3(ipc, version);
                 default:
                     throw new NotImplementedException($"Game with id '{id}' not implemented");
             }
