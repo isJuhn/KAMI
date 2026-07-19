@@ -188,12 +188,12 @@ namespace KAMI.Windows
             m_kami.SetHideMouseCursor(false);
         }
 
-        private int? ToVKey(Key? key)
+        private static int? ToVKey(Key? key)
         {
             return key != null ? KeyInterop.VirtualKeyFromKey(key.Value) : null;
         }
 
-        private Key? FromVKey(int? key)
+        private static Key? FromVKey(int? key)
         {
             return key != null ? KeyInterop.KeyFromVirtualKey(key.Value) : null;
         }
