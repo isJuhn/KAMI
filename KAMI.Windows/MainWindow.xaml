@@ -12,7 +12,11 @@
         <Button x:Name="toggleButton" Content="Unbound" HorizontalAlignment="Left" Margin="107,44,0,0" VerticalAlignment="Top" Width="59" Click="toggleButton_Click" KeyDown="toggleButton_KeyDown" LostFocus="toggleButton_LostFocus"/>
         <Label x:Name="sensitivityLabel" Content="Sensitivity: " HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="sensitivityTextBox" HorizontalAlignment="Left" Margin="121,76,0,0" Text="0.003" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="sensitivityTextBox_TextChanged"/>
-        <TextBox x:Name="scopedSensitivityTextBox" HorizontalAlignment="Left" Margin="121,99,0,0" Text="1.000" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="scopedSensitivityTextBox_TextChanged"/>
+        <TextBox x:Name="scopedSensitivityTextBox" HorizontalAlignment="Left" Margin="121,99,0,0" Text="1.000" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="scopedSensitivityTextBox_TextChanged" IsEnabled="False">
+            <TextBox.ToolTip>
+                <ToolTip Content="This feature is only available in Ratchet 3 PS2"/>
+            </TextBox.ToolTip>
+        </TextBox>
         <Label x:Name="infoLabel" Content="Info:" HorizontalAlignment="Left" Margin="11,183,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.574,0.139"/>
         <Ellipse x:Name="sensitivityEllipse" HorizontalAlignment="Left" Height="18" Margin="251,76,0,0" VerticalAlignment="Top" Width="18" Fill="DarkGreen"/>
         <Button x:Name="mouse1Button" Content="Unbound" HorizontalAlignment="Left" Margin="251,10,0,0" VerticalAlignment="Top" Click="mouse1Button_Click" KeyDown="mouse1Button_KeyDown" LostFocus="mouse1Button_LostFocus"/>

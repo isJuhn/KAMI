@@ -165,6 +165,11 @@ namespace KAMI.Windows
             string hash = m_kami.Connected ? PineIPC.GetGameUUID(ipc) : "";
             Dispatcher.BeginInvoke((Action)(() =>
             {
+                // Enable/disable scoped sensitivity only for Ratchet 3 PS2
+                scopedSensitivityTextBox.IsEnabled = titleId == "SCUS-97353";
+                scopedSensitivityEllipse.Opacity = titleId == "SCUS-97353" ? 1.0 : 0.5;
+                scopedSensitivityLabel.Opacity = titleId == "SCUS-97353" ? 1.0 : 0.5;
+
                 if (m_kami.Connected)
                 {
                     infoLabel.Content  = $"Version:      {version}\n";
