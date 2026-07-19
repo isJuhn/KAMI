@@ -100,10 +100,10 @@ namespace KAMI.Core.Games
                 vertDiff *= ScopedSensModifier;
             }
 
-            // m_camera.Update(horDiff, vertDiff);
+            m_camera.Update(horDiff, vertDiff);
 
-            // IPCUtils.WriteFloat(m_ipc, m_addressHor, m_camera.Hor);
-            // IPCUtils.WriteFloat(m_ipc, m_addressVert, m_camera.Vert);
+            IPCUtils.WriteFloat(m_ipc, m_addressHor, m_camera.Hor);
+            IPCUtils.WriteFloat(m_ipc, m_addressVert, m_camera.Vert);
 
             // Gravity-ramp directional camera update using character up vector
             // Applied to both single player and multiplayer
