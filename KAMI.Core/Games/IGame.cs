@@ -6,6 +6,7 @@ namespace KAMI.Core.Games
     public interface IGame
     {
         public void InjectionStart();
+        public void InjectionStop();
         public void UpdateCamera(int diffX, int diffY);
         public float SensModifier { get; set; }
         public float ScopedSensModifier { get; set; }
@@ -25,6 +26,10 @@ namespace KAMI.Core.Games
         }
 
         public virtual void InjectionStart()
+        {
+        }
+
+        public virtual void InjectionStop()
         {
         }
 

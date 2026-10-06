@@ -9,6 +9,10 @@
         {
         }
 
+        public void InjectionStop()
+        {
+        }
+
         public void UpdateCamera(int diffX, int diffY)
         {
         }
