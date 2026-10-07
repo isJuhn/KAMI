@@ -26,6 +26,7 @@ namespace KAMI.Core
         GameManager m_gameManager;
         Action<Exception> m_exceptionCallback;
         bool m_closing = false;
+        bool m_wasInjecting = false;
         public KamiConfig Config => m_configManager.Config;
         public bool Injecting { get; private set; } = false;
         public bool Connected { get; private set; } = false;
@@ -321,6 +322,12 @@ namespace KAMI.Core
                         if (Config.InvertY) diffY = -diffY;
                         m_game.UpdateCamera(diffX, diffY);
                     }
+                    else if (m_wasInjecting && Status == KAMIStatus.Ready)
+                    {
+                        // Stopped here and not in ToggleInjector, so games only talk to the emulator from this thread
+                        m_game.InjectionStop();
+                    }
+                    m_wasInjecting = Status == KAMIStatus.Injecting;
                     if (!Connected)
                     {
                         Thread.Sleep(100);
