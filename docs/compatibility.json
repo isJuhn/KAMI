@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /compatibility.json
+---
+{{ site.data.compatibility | jsonify }}

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f5f5f2" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#17191c" media="(prefers-color-scheme: dark)">
+  <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+  {% capture document_title %}{{ page.title | default: site.title }}{% unless page.title contains 'KAMI' %} — KAMI{% endunless %}{% endcapture %}
+  <title>{{ document_title | escape }}</title>
+  <meta name="description" content="{{ page.description | default: site.description | escape }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ document_title | escape }}">
+  <meta property="og:description" content="{{ page.description | default: site.description | escape }}">
+  <meta property="og:image" content="{{ '/assets/images/social.png' | absolute_url }}">
+  <meta property="og:image:alt" content="KAMI — Kot and Mouse Injector. Mouse control for emulated games.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}" sizes="any">
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="shell">
+    <header class="site-header">
+      <a class="wordmark" href="{{ '/' | relative_url }}" aria-label="KAMI home">
+        <img src="{{ '/assets/images/kami-small.svg' | relative_url }}" width="32" height="32" alt="">
+        <span>KAMI</span>
+      </a>
+      <nav aria-label="Main navigation">
+        {% for item in site.navigation %}<a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>{% endfor %}
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">{{ content }}</main>
+    <footer class="site-footer">
+      <p><strong>KAMI</strong><span>Kot and Mouse Injector</span></p>
+      <nav aria-label="Project links">
+        <a href="{{ site.links.source }}">Source</a>
+        <a href="{{ site.links.releases }}">Releases</a>
+        <a href="{{ '/about/#license' | relative_url }}">MIT license</a>
+        <label class="theme-picker" hidden>
+          <span>Theme</span>
+          <select id="theme">
+            <option value="system">System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+      </nav>
+    </footer>
+  </div>
+</body>
+</html>

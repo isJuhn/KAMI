@@ -1,0 +1,11 @@
+---
+layout: default
+---
+<article class="article">
+  <header class="article-header">
+    <p class="eyebrow">{{ page.eyebrow | default: 'KAMI' }}</p>
+    <h1>{{ page.title | escape }}</h1>
+    <p class="article-lead">{{ page.description | escape }}</p>
+  </header>
+  <div class="prose">{{ content }}</div>
+</article>

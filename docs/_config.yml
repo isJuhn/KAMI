@@ -1,0 +1,41 @@
+title: KAMI
+description: Mouse control for supported emulated games. Kot and Mouse Injector brings familiar mouse input to RPCS3 and PCSX2.
+baseurl: /KAMI
+lang: en
+timezone: UTC
+
+# GitHub Pages supplies site.url for the repository that builds this site.
+links:
+  source: https://github.com/isJuhn/KAMI
+  download: https://github.com/isJuhn/KAMI/releases/latest
+  releases: https://github.com/isJuhn/KAMI/releases
+  runtime: https://dotnet.microsoft.com/en-us/download/dotnet/10.0
+  license: https://github.com/isJuhn/KAMI/blob/master/LICENSE
+
+navigation:
+  - title: Compatibility
+    url: /compatibility/
+  - title: Quickstart
+    url: /quickstart/
+  - title: Developers
+    url: /developers/
+  - title: About
+    url: /about/
+
+# These are built by GitHub Pages; no remote theme or frontend dependencies.
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - .gitignore

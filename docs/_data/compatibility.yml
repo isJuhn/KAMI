@@ -1,0 +1,320 @@
+# Exact serials and version gates, checked against both v0.0.8 and source_commit.
+# A missing versions list means the handler does not check the game version;
+# it does not establish that every update has been tested.
+reviewed: "2026-10-23"
+release: v0.0.8
+release_commit: d6410bf884c509938e8c6fbc145e00c36a43055e
+source_commit: 966a432adf531519ad6117a21106514767c2c133
+legacy_commit: 7eb7911a8a4e3c95ea4d78a6352ab8a13e6418e0
+platforms:
+  - id: ps3
+    name: PlayStation 3
+    emulator: RPCS3
+  - id: ps2
+    name: PlayStation 2
+    emulator: PCSX2
+games:
+  - id: battlefield-bad-company
+    title: "Battlefield: Bad Company"
+    platform: ps3
+    source: Battlefield/BadCompany.cs
+    variants:
+      - region: Europe
+        serials: [BLES00261]
+      - region: North America
+        serials: [BLUS30118]
+    notes: "Released support is experimental: v0.0.5 introduced the original implementation. The broader support described below is not included in v0.0.8."
+    release_note: v0.0.5
+    unreleased: "Current source expands camera handling beyond the first level, adds stationary and vehicle turrets, first- and third-person vehicle cameras, and field-of-view-aware sensitivity. Vehicle look controls yaw only and returns to the game's centering after two seconds without mouse input."
+    change_url: https://github.com/isJuhn/KAMI/pull/118
+
+  - id: call-of-duty-3
+    title: Call of Duty 3
+    platform: ps3
+    source: CallOfDuty3.cs
+    variants:
+      - region: Europe
+        serials: [BLES00016]
+    notes: "Initial support was introduced in v0.0.2. No gameplay rating was recorded in the original compatibility matrix."
+    release_note: v0.0.2
+
+  - id: goldeneye-007-reloaded
+    title: "GoldenEye 007: Reloaded"
+    platform: ps3
+    source: GoldenEyeReloadedPS3.cs
+    variants:
+      - region: Europe
+        serials: [BLES01292]
+        versions: ["01.02"]
+    notes: "Added in v0.0.8. The handler rejects game versions other than 01.02."
+    release_note: v0.0.8
+
+  - id: killzone
+    title: Killzone
+    platform: ps3
+    source: Killzone1PS3.cs
+    variants:
+      - region: Europe
+        serials: [BCES01743]
+    historical_rating: Decent
+    historical_note: "The original matrix requested further testing. This is a historical assessment, not a new validation of current emulator builds."
+
+  - id: killzone-2
+    title: Killzone 2
+    platform: ps3
+    source: Killzone2PS3.cs
+    variants:
+      - region: Europe
+        serials: [BCES00081]
+        versions: ["01.01", "01.29"]
+      - region: North America
+        serials: [BCUS98116]
+        versions: ["01.01", "01.29"]
+      - region: Japan
+        serials: [BCJS30032]
+        versions: ["01.01", "01.29"]
+      - region: Asia
+        serials: [BCAS20066]
+        versions: ["01.01", "01.29"]
+    notes: "The additional North American, Japanese and Asian IDs were included in v0.0.7. The version check is shared across all four IDs."
+    release_note: v0.0.7
+    historical_rating: Decent
+    historical_note: "The original matrix listed only BCES00081 and requested further testing. Its rating should not be extended to the additional editions."
+
+  - id: killzone-3
+    title: Killzone 3
+    platform: ps3
+    source: Killzone3PS3.cs
+    variants:
+      - region: Europe
+        serials: [BCES01007]
+        versions: ["01.00", "01.14"]
+      - region: North America
+        serials: [BCUS98234]
+        versions: ["01.00", "01.14"]
+    historical_rating: Decent
+    historical_note: "The original matrix broadly described US/EU coverage and requested further testing. The exact IDs and versions above replace that broad region claim."
+
+  - id: metal-gear-solid-4
+    title: "Metal Gear Solid 4: Guns of the Patriots"
+    platform: ps3
+    source: MetalGearSolid4.cs
+    variants:
+      - region: Europe
+        edition: Disc
+        serials: [BLES00246]
+        versions: ["02.00"]
+      - region: North America
+        edition: Disc
+        serials: [BLUS30109]
+        versions: ["02.00"]
+      - region: Japan
+        edition: Disc
+        serials: [BLJM67001]
+        versions: ["02.00"]
+      - region: Europe
+        edition: Digital
+        serials: [NPEB02182]
+        versions: ["02.00"]
+      - region: North America
+        edition: Digital
+        serials: [NPUB31633]
+        versions: ["02.00"]
+      - region: Japan
+        edition: Digital
+        serials: [NPJB00698]
+        versions: ["02.00"]
+    notes: "Added in v0.0.6. Every listed edition requires game version 02.00."
+    release_note: v0.0.6
+
+  - id: nier
+    title: "NieR / NieR Gestalt"
+    platform: ps3
+    source: NierPS3.cs
+    variants:
+      - region: North America
+        serials: [BLUS30481]
+    historical_rating: Unknown
+    historical_note: "The original matrix provided no gameplay assessment."
+
+  - id: persona-5
+    title: Persona 5
+    platform: ps3
+    source: Persona5PS3.cs
+    variants:
+      - region: Europe
+        edition: Disc
+        serials: [BLES02247]
+      - region: North America
+        edition: Disc
+        serials: [BLUS31604]
+      - region: Europe
+        edition: Digital
+        serials: [NPEB02436]
+      - region: North America
+        edition: Digital
+        serials: [NPUB31848]
+    historical_rating: Unknown
+    historical_note: "The original matrix provided no gameplay assessment and broadly described US/EU coverage. Use the exact IDs above."
+
+  - id: ratchet-3-ps3
+    title: "Ratchet & Clank 3: Up Your Arsenal"
+    platform: ps3
+    source: Ratchet3PS3.cs
+    variants:
+      - region: Europe
+        serials: [BCES01503]
+    notes: "The handler contains separate single-player and multiplayer camera addresses. This alone does not establish a tested multiplayer experience."
+    historical_rating: Good
+    historical_note: "The original recommendation was limited to single-player using lock-strafe. Retain that qualification when interpreting the rating."
+
+  - id: ratchet-a-crack-in-time
+    title: "Ratchet & Clank: A Crack in Time"
+    platform: ps3
+    source: RatchetACiT.cs
+    variants:
+      - region: Europe
+        serials: [BCES00511]
+    notes: "The handler includes lock-strafe, Clank and aim-down-sights cameras. v0.0.4 reported improved camera handling. This game had no row in the original matrix."
+    release_note: v0.0.4
+
+  - id: ratchet-tools-of-destruction
+    title: "Ratchet & Clank: Tools of Destruction"
+    platform: ps3
+    source: RatchetToD.cs
+    variants:
+      - region: Europe
+        serials: [BCES00052]
+    notes: "v0.0.4 reported improvements to camera-slot handling, so the old rating below is not a current verdict."
+    release_note: v0.0.4
+    unreleased: "Current source follows the active camera and its transition target, handles lock-strafe and aiming cameras, and accounts for changing gravity. This camera rewrite is newer than v0.0.8."
+    change_url: https://github.com/isJuhn/KAMI/commit/483ac4dbd818cca1dff438b02e3a448770c1fa7e
+    historical_rating: Bad
+    historical_note: "The original matrix reported problems with the game's camera-slot system. Subsequent releases and source changes address this area; no fresh gameplay rating is assigned here."
+
+  - id: ratchet-deadlocked-ps3
+    title: "Ratchet: Deadlocked"
+    platform: ps3
+    source: RatchetDLPS3.cs
+    variants:
+      - region: North America
+        serials: [NPUA80646]
+    historical_rating: Unknown
+    historical_note: "The original matrix provided no gameplay assessment."
+
+  - id: red-dead-redemption
+    title: Red Dead Redemption
+    platform: ps3
+    source: RedDeadRedemption.cs
+    variants:
+      - region: Europe
+        edition: Original digital release
+        serials: [NPEB00833]
+        versions: ["01.00", "01.02"]
+      - region: North America
+        edition: Original digital release
+        serials: [NPUB30638]
+        versions: ["01.00", "01.02"]
+      - region: Europe
+        edition: Original disc release
+        serials: [BLES00680]
+        versions: ["01.00", "01.08"]
+      - region: North America
+        edition: Original disc release
+        serials: [BLUS30418]
+        versions: ["01.00", "01.08"]
+      - region: Europe
+        edition: Game of the Year
+        serials: [BLES01294]
+        versions: ["01.00", "01.01"]
+      - region: North America
+        edition: Game of the Year
+        serials: [BLUS30758]
+        versions: ["01.00", "01.01"]
+    notes: "The handler disables horizontal and vertical camera auto-centering while injecting. It does not implement mouse selection in the weapon wheel."
+    historical_rating: Unknown
+    historical_note: "The original matrix provided no gameplay assessment and broadly described US/EU coverage. Support is limited to the exact edition/version pairs above."
+
+  - id: resistance-fall-of-man
+    title: "Resistance: Fall of Man"
+    platform: ps3
+    source: Resistance1.cs
+    variants:
+      - region: Europe
+        serials: [BCES00001]
+    notes: "v0.0.4 reported that injection should continue through level transitions in all three Resistance games. The historical rating predates those fixes."
+    release_note: v0.0.4
+    historical_rating: Bad
+    historical_note: "The original matrix reported camera-slot problems shared with the other Insomniac games. No new gameplay rating is assigned here."
+
+  - id: resistance-2
+    title: Resistance 2
+    platform: ps3
+    source: Resistance2.cs
+    variants:
+      - region: Europe
+        serials: [BCES00226]
+    notes: "v0.0.4 reported that injection should continue through level transitions in all three Resistance games. The historical rating predates those fixes."
+    release_note: v0.0.4
+    historical_rating: Bad
+    historical_note: "The original matrix reported camera-slot problems shared with the other Insomniac games. No new gameplay rating is assigned here."
+
+  - id: resistance-3
+    title: Resistance 3
+    platform: ps3
+    source: Resistance3.cs
+    variants:
+      - region: Europe
+        serials: [BCES01118]
+    notes: "v0.0.4 reported that injection should continue through level transitions in all three Resistance games. The historical rating predates those fixes."
+    release_note: v0.0.4
+    historical_rating: Bad
+    historical_note: "The original matrix reported camera-slot problems shared with the other Insomniac games. No new gameplay rating is assigned here."
+
+  - id: tales-of-xillia
+    title: Tales of Xillia
+    platform: ps3
+    source: Xillia1.cs
+    variants:
+      - region: North America
+        edition: Disc
+        serials: [BLUS31006]
+      - region: North America
+        edition: Digital
+        serials: [NPUB31136]
+    historical_rating: Good
+    historical_note: "The original matrix reported a good experience for US releases. The exact disc and digital IDs are listed above."
+
+  - id: black
+    title: Black
+    platform: ps2
+    source: BlackPS2.cs
+    variants:
+      - region: North America
+        serials: [SLUS-21376]
+    notes: "v0.0.5 introduced basic support. This game had no row in the original matrix; no complete-playthrough rating is claimed."
+    release_note: v0.0.5
+
+  - id: ratchet-3-ps2
+    title: "Ratchet & Clank 3: Up Your Arsenal"
+    platform: ps2
+    source: Ratchet3PS2.cs
+    variants:
+      - region: North America
+        serials: [SCUS-97353]
+    notes: "The handler contains single-player and multiplayer camera paths. The historical recommendation below is narrower than the implementation."
+    unreleased: "Current source adds scoped sensitivity and gravity-ramp camera work for single-player and multiplayer. These improvements are newer than v0.0.8."
+    change_url: https://github.com/isJuhn/KAMI/pull/111
+    historical_rating: Good
+    historical_note: "The original recommendation was limited to single-player using lock-strafe. It did not assess the later multiplayer or camera improvements."
+
+  - id: ratchet-deadlocked-ps2
+    title: "Ratchet: Deadlocked"
+    platform: ps2
+    source: RatchetDLPS2.cs
+    variants:
+      - region: North America
+        serials: [SCUS-97465]
+    notes: "The handler selects between two camera address sets based on a multiplayer flag. This is not evidence of a tested single-player experience."
+    historical_rating: Good
+    historical_note: "The original recommendation covered multiplayer only. Single-player was not validated by that assessment."

@@ -1,0 +1,76 @@
+---
+layout: article
+title: Compatibility
+description: Find the game editions and versions recognized by KAMI, with release notes and known limitations.
+eyebrow: Find your game
+permalink: /compatibility/
+---
+{% assign compatibility = site.data.compatibility %}
+<div class="compat-intro">
+  <p>KAMI recognizes {{ compatibility.games | map: 'title' | uniq | size }} games across RPCS3 and PCSX2, with {{ compatibility.games | size }} game/platform combinations. Start with your game's serial and update version: support for one edition does not imply support for every release.</p>
+  <p>The entries below match <a href="https://github.com/isJuhn/KAMI/releases/tag/{{ compatibility.release }}">{{ compatibility.release }}</a> and the <a href="https://github.com/isJuhn/KAMI/blob/{{ compatibility.source_commit }}/KAMI.Core/GameManager.cs">reviewed source</a>. Changes newer than that release are explicitly marked. A registered handler means KAMI has an implementation for that edition; it is not a guarantee of a complete, tested playthrough.</p>
+  <p>Need to enable IPC or set up your controls? Follow the <a href="{{ '/quickstart/' | relative_url }}">quickstart</a>.</p>
+</div>
+
+<nav class="page-toc" aria-label="Compatibility sections">
+  <a href="#ps3">PlayStation 3 · RPCS3</a>
+  <a href="#ps2">PlayStation 2 · PCSX2</a>
+  <a href="#reading-the-list">Reading the list</a>
+</nav>
+
+<section id="reading-the-list" aria-labelledby="reading-title">
+  <h2 id="reading-title">Reading the list</h2>
+  <ul>
+    <li><strong>Game version</strong> means the installed game update, not the emulator version. Where versions are listed, other versions are rejected by the handler.</li>
+    <li><strong>No version check</strong> means the handler does not inspect that value. It does not mean all updates have been tested.</li>
+    <li><strong>Historical rating</strong> preserves the old compatibility site's assessment. These ratings are not fresh tests, and several predate substantial fixes.</li>
+    <li><strong>Source-only changes</strong> are present in the reviewed code but are newer than {{ compatibility.release }}. The download button links to the latest published release.</li>
+  </ul>
+  <p>Expand a game for its exact editions and notes. Everything on this page works without JavaScript.</p>
+</section>
+
+{% for platform in compatibility.platforms %}
+{% assign games = compatibility.games | where: 'platform', platform.id %}
+<section class="compat-platform" id="{{ platform.id }}" aria-labelledby="{{ platform.id }}-title">
+  <h2 id="{{ platform.id }}-title">{{ platform.name }} <span class="muted">/ {{ platform.emulator }}</span></h2>
+  <p>{{ games | size }} games with registered handlers.</p>
+  {% for game in games %}
+  <details class="game-entry" id="{{ game.id }}"{% if forloop.first %} open{% endif %}>
+    <summary><h3>{{ game.title | escape }}</h3></summary>
+    <div class="game-details">
+      <dl class="compat-variants">
+        {% for variant in game.variants %}
+        <div>
+          <dt>{{ variant.region | escape }}{% if variant.edition %} · {{ variant.edition | escape }}{% endif %}</dt>
+          <dd>
+            {% for serial in variant.serials %}<code>{{ serial }}</code>{% unless forloop.last %}, {% endunless %}{% endfor %}
+            <span class="compat-version">{% if variant.versions %}Game version: {% for version in variant.versions %}<code>{{ version }}</code>{% unless forloop.last %} or {% endunless %}{% endfor %}{% else %}No version check{% endif %}</span>
+          </dd>
+        </div>
+        {% endfor %}
+      </dl>
+      {% if game.notes %}<p>{{ game.notes | escape }}{% if game.release_note %} <a href="https://github.com/isJuhn/KAMI/releases/tag/{{ game.release_note }}">{{ game.release_note }} release notes</a>.{% endif %}</p>{% endif %}
+      {% if game.unreleased %}
+      <p class="compat-note"><strong>Source-only changes.</strong> {{ game.unreleased | escape }} <a href="{{ game.change_url }}">View the change</a>.</p>
+      {% endif %}
+      {% if game.historical_rating %}
+      <p class="compat-history"><strong>Historical rating: {{ game.historical_rating }}.</strong> {{ game.historical_note | escape }}</p>
+      {% endif %}
+      <p class="source-link"><a href="https://github.com/isJuhn/KAMI/blob/{{ compatibility.source_commit }}/KAMI.Core/Games/{{ game.source }}">View the game handler</a></p>
+    </div>
+  </details>
+  {% endfor %}
+</section>
+{% endfor %}
+
+<section aria-labelledby="report-title">
+  <h2 id="report-title">Help improve this list</h2>
+  <p>If a listed game behaves differently, <a href="{{ site.links.source }}/issues">open an issue</a> with the game serial and update version, emulator and KAMI versions, and the level or camera mode involved. Mention whether you used a release or built from source. These details make reports useful without guessing which edition was tested.</p>
+</section>
+
+<section class="compat-provenance" aria-labelledby="sources-title">
+  <h2 id="sources-title">Sources and maintenance</h2>
+  <p>Reviewed {{ compatibility.reviewed }} against KAMI <a href="https://github.com/isJuhn/KAMI/tree/{{ compatibility.release_commit }}">{{ compatibility.release }}</a> and source commit <a href="https://github.com/isJuhn/KAMI/commit/{{ compatibility.source_commit }}"><code>{{ compatibility.source_commit | slice: 0, 7 }}</code></a>. Regional labels help identify editions; the serial is the definitive match used by KAMI.</p>
+  <p>This page replaces the separate MkDocs compatibility list. Historical assessments are adapted from <a href="https://github.com/isJuhn/KAMI-Docs/blob/{{ compatibility.legacy_commit }}/docs/index.md">KAMI-Docs</a>, copyright © 2021 Johan “isJuhn” Hellgren, under the <a href="https://github.com/isJuhn/KAMI-Docs/blob/{{ compatibility.legacy_commit }}/LICENSE">MIT license</a>. The license notice is retained in this project's <a href="{{ site.links.license }}">LICENSE</a>.</p>
+  <p>Maintain entries in <code>docs/_data/compatibility.yml</code> alongside changes to game handlers. Update the source revision, release information and any affected notes together.</p>
+</section>

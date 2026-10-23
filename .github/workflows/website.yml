@@ -1,0 +1,41 @@
+name: Website
+
+on:
+  push:
+    paths:
+      - 'docs/**'
+      - 'tools/check-*.py'
+      - 'tools/check-theme.cjs'
+      - 'KAMI.Core/GameManager.cs'
+      - 'KAMI.Core/Games/**'
+      - 'KAMI.Core/Cameras/**'
+      - '.github/workflows/website.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'tools/check-*.py'
+      - 'tools/check-theme.cjs'
+      - 'KAMI.Core/GameManager.cs'
+      - 'KAMI.Core/Games/**'
+      - 'KAMI.Core/Cameras/**'
+      - '.github/workflows/website.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/jekyll-build-pages@44a6e6beabd48582f863aeeb6cb2151cc1716697 # v1
+        with:
+          source: ./docs
+          destination: ./_site
+      - name: Check rendered pages and internal links
+        run: python3 tools/check-site.py _site --base /KAMI
+      - name: Check compatibility against source
+        run: python3 tools/check-compatibility.py _site/compatibility.json
+      - name: Check theme behavior
+        run: node tools/check-theme.cjs

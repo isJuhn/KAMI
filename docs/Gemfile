@@ -1,0 +1,4 @@
+source "https://rubygems.org"
+
+# Optional local preview; GitHub Pages provides this build environment remotely.
+gem "github-pages", group: :jekyll_plugins
